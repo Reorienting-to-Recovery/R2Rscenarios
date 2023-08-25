@@ -21,6 +21,34 @@ a given watershed, for a period of years and number of units of effort.
 
 Actions are defined below:
 
+#TODO fit into 4Hs 
+
+#### Hydrology 
+* HYDRO 1: 
+* 5: Increase rearing survival by 1%
+* 6: Increase migratory survival by 1% 
+* 7: Increase prespawn survival by 1% 
+PLUS hab benefits, see how I can package these together 
+
+#### Habitat 
+* HAB 1:
+* 2: Add 1 acre of spawning habitat
+* 3: Add 1 acres of inchannel rearing habitat
+* 4: Add 1 acres of floodplain rearing habitat
+* 8: Increase growth by moving up 1 category in bioenergetic transition (ex: med to high)
+
+#### Hatchery 
+* HATCH 1:
+* 9: Increase hatchery releases 1%
+* 10: Move hatchery releases to bay 1%
+* 11: Move hatchery releases to ocean 1%
+
+#### Harvest 
+* HARV 1:
+* 12: Set harvest to only hatchery 
+* 14: Decrease ocean harvest 
+* 15: Decrease in river harvest 
+
 * 1: Do nothing
 * 2: Add 1 acre of spawning habitat
 * 3: Add 1 acres of inchannel rearing habitat
@@ -80,10 +108,9 @@ scenario <- load_scenario(scenario = scenario,
 
 ### Helper Datasets
 
-For a full list of proper watershed labels see: `R2Rscenario::watershed_labels`
+See reference, datasets, for a full list of helper datasets. 
 
-The list `R2Rscenario::species` can be used to provide appropriate values to the 
-`species` argument to the `load_scenario` function. For example, `R2Rscenario::species$FALL_RUN`.
+For a list of proper watershed labels see: `R2Rscenario::watershed_labels`
 
 The minimum decay rates for each watershed are stored in `R2Rscenario::spawn_decay_rate` and `R2Rscenario::rear_decay_rate`
 
