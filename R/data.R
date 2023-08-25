@@ -81,3 +81,10 @@ NULL
 #' @rdname max_habitat
 #' @format NULL
 "max_rear_area"
+
+#' @title Spawning Decay Multiplier
+#' @description A list of 4 arrays for each run "fr", "sr", "wr", "lfr". Each list element
+#' is an array 31 x 22 x 12 containing spawning decay by watershed, year and month.
+#' @format list of 4 31 x 22 x 12 arrays.
+#' @details this data was re-exported from DSMhabitat::spawning_decay_multiplier
+"spawning_decay_multiplier"

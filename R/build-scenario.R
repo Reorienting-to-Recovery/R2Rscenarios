@@ -49,8 +49,9 @@
 #' @export
 load_scenario <- function(scenario, habitat_inputs,
                           species = c("fr", "wr", "sr", "st", "lfr"),
-                          spawn_decay_rate = R2Rscenario::spawn_decay_rate,
-                          rear_decay_rate = R2Rscenario::rear_decay_rate,
+                          spawn_decay_rate = ..params$spawn_decay_rate,
+                          rear_decay_rate = ..params$rear_decay_rate,
+                          spawn_decay_multiplier = ..params$spawn_decay_multiplier,
                           stochastic = TRUE) {
 
   species <- match.arg(species)
@@ -79,6 +80,22 @@ load_scenario <- function(scenario, habitat_inputs,
                                  species = species,
                                  no_decay_tribs = scenario$no_decay,
                                  stochastic = stochastic)
+  
+  if (species == "fr" && !is.null(spawn_decay_multiplier)) {
+    spawning_habitat <- modify_spawning_habitat(habitat = habitat_inputs$spawning_habitat,
+                                                action_units = scenario$spawn,
+                                                amount = one_acre,
+                                                stochastic = stochastic,
+                                                theoretical_max = spawn_theoretical_habitat_max,
+                                                decay_multipliers = spawn_decay_multiplier)
+  } else {
+    spawning_habitat <- modify_habitat(habitat = habitat_inputs$spawning_habitat,
+                                       action_units = scenario$spawn,
+                                       amount = one_acre,
+                                       decay = decay$spawn,
+                                       theoretical_max = spawn_theoretical_habitat_max,
+                                       stochastic = stochastic)
+  }
 
   spawning_habitat <- modify_habitat(habitat = habitat_inputs$spawning_habitat,
                                      action_units = scenario$spawn,
@@ -123,6 +140,41 @@ load_scenario <- function(scenario, habitat_inputs,
 #' @noRd
 modify_survival <- function(action_units) {
   (action_units * .01) + 1
+}
+
+#' Modify Spawning Habitat
+#' TODO can decay be passed in as argument? for sensitivity analysis
+#' @export
+modify_spawning_habitat <- function(habitat, action_units, amount, theoretical_max, stochastic,
+                                    decay_multipliers) {
+  
+  years <- dim(habitat)[3]
+  
+  if (stochastic) {
+    amounts <- add_parital_controllability(amount, 31*years)
+  } else {
+    amounts <- rep(amount, 31*years)
+  }
+  
+  amount_matrix <- matrix(amounts, nrow = 31)
+  
+  cumulative_amount_matrix <- t(apply(amount_matrix*action_units, MARGIN = 1, cumsum))
+  
+  # for each month within a year, add or degrade same volume of habitat
+  for (i in 1:12) {
+    # add habitat by number of units
+    habitat[ , i, ] <- habitat[ , i, ] + cumulative_amount_matrix
+  }
+  
+  for (i in 1:31) {
+    habitat[i,,] <- habitat[i,,] * decay_multipliers[i,,]
+  }
+  
+  # Do not let habitat amount exceed theoretical habitat maximum for spawn and inchannel rearing
+  habitat <- pmin(habitat, theoretical_max)
+  
+  
+  return(habitat)
 }
 
 #' Modify Inchannel Habitat
@@ -289,9 +341,12 @@ decay_amount_matrices <- function(spawn_years, rear_years, spawn_decay_rate,
 #' \itemize{
 #'   \item \strong{1} - Do nothing
 #'   \item \strong{2} - Add 1 acre of spawning habitat
-#'   \item \strong{3} - Add 2 acres of inchannel rearing habitat
-#'   \item \strong{4} - Add 3 acres of floodplain rearing habitat
-#'   \item \strong{5} - Increase rearing survival by 5\%
+#'   \item \strong{3} - Add 1 acres of inchannel rearing habitat
+#'   \item \strong{4} - Add 1 acres of floodplain rearing habitat
+#'   \item \strong{5} - Increase rearing survival by 1\%
+#'   \item \strong{6} - Increase migratory survival by 1\%
+#'   \item \strong{7} - Increase prespawn survival by 1\%
+#'   \item \strong{8} - Increase growth by moving up 1 category in bioenergetic transition (ex: med to high)
 #'
 #' }
 #' @export
@@ -300,8 +355,9 @@ get_action_matrices <- function(scenario_df) {
   spawn_actions <- get_action_units(scenario_df, action_type = 2)
   ic_actions <- get_action_units(scenario_df, action_type = 3)
   flood_actions <- get_action_units(scenario_df, action_type = 4)
-  survival_actions <- get_action_units(scenario_df, action_type = 5)
-
+  rearing_survival_actions <- get_action_units(scenario_df, action_type = 5)
+  migratory_survival_actions <- get_action_units(scenario_df, action_type = 6)
+  
   return(list(spawn = spawn_actions, inchannel = ic_actions,
               floodplain = flood_actions, survival = survival_actions))
 }

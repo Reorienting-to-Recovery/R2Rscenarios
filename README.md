@@ -28,6 +28,13 @@ Actions are defined below:
 * 5: Increase rearing survival by 1%
 * 6: Increase migratory survival by 1% 
 * 7: Increase prespawn survival by 1% 
+* 8: Increase growth by moving up 1 category in bioenergetic transition (ex: med to high)
+* 9: Increase hatchery releases 1%
+* 10: Move hatchery releases to bay 1%
+* 11: Move hatchery releases to ocean 1%
+* 12: Set harvest to only hatchery 
+* 13: Set harvest to only river 
+
 
 For more information run `?load_scenario` in the console.
 
