@@ -1,0 +1,46 @@
+title: R2Rscenario
+url: https://Reorienting-to-Recovery/R2Rscenario
+template:
+  params:
+    bootswatch: yeti
+
+home:
+  links:
+  - text: Reorienting to Recovery Documenation Site 
+    href: https://reorienting-to-recovery.gitbook.io/documentation-site/zCZ2Z2yqFYMUQrtZdTlg/
+
+reference:
+- title: Scenario Functions
+  desc: Functions to apply scenarios to the R2R Salmon Population Model
+  contents:
+  - get_action_matrices
+  - load_scenario
+
+- title: Scenario Data
+  desc: Scenario Data used in CVPIA Salmon Population Models
+  contents:
+  - max_rear_area
+  - max_spawn_area
+  - regulated_watersheds
+  - rear_decay_rate
+  - spawn_decay_rate
+  - species
+  - watershed_groups
+  - watershed_labels
+
+navbar:
+  type: default
+  left:
+  - text: 'Reference'
+    href: reference/index.html
+  - text: 'News'
+    href: news/index.html
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/Reorienting-to-Recovery/R2Rscenario
+
+
+repo:
+  url:
+    home: https://github.com/Reorienting-to-Recovery/R2Rscenario
+    issue: https://github.com/Reorienting-to-Recovery/R2Rscenario/issues/
