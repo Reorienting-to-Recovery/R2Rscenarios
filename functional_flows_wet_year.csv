@@ -1,0 +1,13 @@
+Month,Flow CFS,Description 
+Jan,62000,"Jan Wet season base flow + Peak Magnitude flows, based on wet year monthly Natural Flows "
+Feb,62000,"Feb Wet season base flow + Peak Magnitude flows, based on wet year monthly Natural Flows"
+Mar,35000,"March Wet season base flow, based on wet year monthly Natural Flows "
+Apr,35000,"April Wet season base flow, based on wet year monthly Natural Flows "
+May,10700,"May Spring recession flow (10,700 for mig surv ~50%)"
+Jun,10700,"June Spring recession flow (10,700 for mig surv ~50%)"
+Jul,7500,July half way between dry season baseflow and mig surv 50% threshold
+Aug,4308,Aug - dry season baseflow (keep migratory surv at ~20%)
+Sep,4308,Sept - dry season baseflow (keep migratory surv at ~20%)
+Oct,4308,Oct - dry season baseflow 
+Nov,11600,"Nov add fall pulse flow, based on wet year monthly Natural Flows"
+Dec,35000,"Dec Begin wet season baseflow and medium flow, based on wet year monthly Natural Flows"

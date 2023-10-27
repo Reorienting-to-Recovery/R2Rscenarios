@@ -25,7 +25,7 @@ Actions are defined below:
 
 #### Hydrology 
 * HYDRO 1: 
-* 5: Increase rearing survival by 1%
+* 5: Increase rearing survival by 1% 
 * 6: Increase migratory survival by 1% 
 * 7: Increase prespawn survival by 1% 
 PLUS hab benefits, see how I can package these together 
@@ -63,6 +63,7 @@ PLUS hab benefits, see how I can package these together
 * 12: Set harvest to only hatchery 
 * 13: Set harvest to only river 
 
+# TODO think through if we want to reduce predation and where (can reduce contact points or decrease prop high predation)
 
 For more information run `?load_scenario` in the console.
 

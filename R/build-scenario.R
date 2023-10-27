@@ -124,7 +124,8 @@ load_scenario <- function(scenario, habitat_inputs,
                                                   amount = three_acres,
                                                   stochastic = stochastic)
 
-  survival_adjustment <- modify_survival(scenario$survival)
+  rearing_survival_adjustment <- modify_rearing_survival(scenario$survival)
+  migratory_survival_adjustment <- modeify_migratory_survival(scenario$survival)
 
   return(list(spawning_habitat = spawning_habitat,
               inchannel_habitat_fry = inchannel_habitat_fry,
@@ -134,11 +135,27 @@ load_scenario <- function(scenario, habitat_inputs,
               survival_adjustment = survival_adjustment))
 }
 
-#' Modify Survival
-#' @description Adds 5\% to the survival rate per each action unit applied
+#' Modify Rearing Survival
+#' @description Adds 1\% to the survival rate per each action unit applied
 #' @param actions_units matrix of actions units
 #' @noRd
-modify_survival <- function(action_units) {
+modify_rearing_survival <- function(action_units) {
+  (action_units * .01) + 1
+}
+
+#' Modify Migratory Survival
+#' @description Adds 1\% to the survival rate per each action unit applied
+#' @param actions_units matrix of actions units
+#' @noRd
+modify_migratory_survival <- function(action_units) {
+  (action_units * .01) + 1
+}
+
+#' Modify Delta Survival
+#' @description Adds 1\% to the survival rate per each action unit applied
+#' @param actions_units matrix of actions units
+#' @noRd
+modify_delta_survival <- function(action_units) {
   (action_units * .01) + 1
 }
 
