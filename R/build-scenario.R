@@ -105,14 +105,28 @@ load_scenario <- function(scenario, params = fallRunDSM::r_to_r_baseline_params,
   
   ### apply updates only to specific watersheds and or years (ex just dry years)
   # create table that has year, param, and boolean use updated or not 
-  all_param_updates <- pmap(scenario, expand_row) |> reduce(bind_rows)
-
-  # GO through each row in the update table 
-
-  update_param <- function(final_params, param_name, watershed, year) {
+  all_param_updates <- pmap(scenario, expand_row) |> 
+    reduce(bind_rows) |> 
+    select(watershed, year, param) |> 
+    distinct()
+  
+  # join all params update to param type lookup 
+  
+  
+  # create final param object
+  updated_params <- c(updated_habitat, updated_harvest, 
+                      updated_hatchery, updated_hydrology)
+  # initial final params as baseline params 
+  final_params <- params
+  
+  # map through each row in the all_param_updates to pull in updates 
+  update_param <- function(final_params, updated_params, param_name, watershed, year) {
     check_class <- class(final_params[[param_name]])
     check_dim <- ifelse(check_class == c("matrix", "array"), dim(final_params[[param_name]]), NA)
-    has_watershed <- ifelse()
+    # TODO if has watershed == FALSE but action specified on watershed, through warning 
+    has_watershed <- ifelse(param_name %in% c("spawning_habitat", "inchannel_habitat_fry",
+                                              "inchannel_habitat_juvenile", "floodplain_habitat",
+                                              ))
     if (watershed == "All" & year == "All") {
       final_params[[param_name]] <- updated_params[[param_name]]
     } 
