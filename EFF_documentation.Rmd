@@ -33,7 +33,7 @@ California's EFF include 5 distinct components of a natural flow regime: fall pu
 
 For more information on EFF please refer to additional sources:
 
--   [Modeling Functional Flows in California\'s Rivers](https://www.frontiersin.org/articles/10.3389/fenvs.2022.787473/full#:~:text=Functional%20flow%20components%20in%20California,ecological%20processes%20in%20riverine%20ecosystems.)
+-   [Modeling Functional Flows in California's Rivers](https://www.frontiersin.org/articles/10.3389/fenvs.2022.787473/full#:~:text=Functional%20flow%20components%20in%20California,ecological%20processes%20in%20riverine%20ecosystems.)
 
 -   [California Environmental Flows Framework](https://ceff.ucdavis.edu/sites/g/files/dgvnsk5566/files/media/documents/CEFF%20Technical%20Report%20Ver%201.0%20Mar_31_2021_DRAFT_FINAL%20for%20web.pdf)
 
@@ -41,9 +41,7 @@ For more information on EFF please refer to additional sources:
 
 ## How can we tailor EFF to our system
 
-EFF are hypothesized to have best flows for salmon in our historical system
-
--   Our system is not highly managed so we may need to alter EFF slightly from their historical values to maximize benefit to salmon.
+EFF are hypothesized to be the best flows for salmon in our historical system. However, our system is highly managed so we may need to alter EFF slightly from their historical values to maximize benefit to salmon.
 
 The R2R techncial team developed proposed EFF monthly flows by combining the [Natural Flows Database](https://ceff.ucdavis.edu/sites/g/files/dgvnsk5566/files/media/documents/CEFF%20Technical%20Report%20Ver%201.0%20Mar_31_2021_DRAFT_FINAL%20for%20web.pdf) values with critical flow to survival migratory thresholds on the Sacramento River (from [Michel 2021](https://esajournals.onlinelibrary.wiley.com/doi/full/10.1002/ecs2.3498)).
 
@@ -64,7 +62,7 @@ compare_total_flow_volumne <- function(calsim_flows, natural_flow_flows, propose
 
 ```
 
-### Wet Year EFF 
+### Wet Year EFF
 
 ```{r}
 # WET YEAR EFF 
@@ -81,7 +79,7 @@ wet_year <- DSMflow::flows_cfs$biop_itp_2018_2019 |>
          month = factor(month.abb[month(date)], levels = month.abb[c(10, 11, 12, 1:9)])) |>
   glimpse() 
 wet_year |> 
-  ggplot(aes(x = water_year, y = `Upper-mid Sacramento River`)) + 
+  ggplot(aes(x = water_year, y = flow_cfs)) + 
   geom_line()
 
 sac_wet_natural_flows_database_eff <- tibble(month = factor(month.abb[1:12], 
@@ -132,7 +130,9 @@ compare_total_flow_volumne(wet_year,
 
 ```
 
-### Dry Year EFF 
+### Dry Year EFF
+
+<div>
 
 ```{r}
 # DRY YEAR EFF 
@@ -146,7 +146,7 @@ dry_year <- DSMflow::flows_cfs$biop_itp_2018_2019 |>
          month = factor(month.abb[month(date)], levels = month.abb[c(10, 11, 12, 1:9)])) |>
   glimpse() 
 dry_year |> 
-  ggplot(aes(x = month, y = `Upper-mid Sacramento River`, group = 1)) + 
+  ggplot(aes(x = month, y = flow_cfs, group = 1)) + 
   geom_line()
 
 sac_dry_natural_flows_database_eff <- tibble(month = factor(month.abb[1:12], 
@@ -192,7 +192,9 @@ compare_total_flow_volumne(dry_year,
 
 ```
 
-### Creating a synthetic flow timeserries 
+</div>
+
+### Creating a synthetic flow timeserries
 
 ```{r}
 water_year_types <- waterYearType::water_year_indices |> 
@@ -219,7 +221,17 @@ represenative_dry_years <- water_year_types |>
   mutate(distance_from_median = abs(index - median_dry_year_index)) |> 
   filter(distance_from_median < 1) |> glimpse()
 
-# Representative Wet years are 1987 & 1994 - both .42 away 
+# Representative Wet years are 1987 & 1994 - both .42 away
 
+# Wet dry sequence 
+water_year_types |> 
+  mutate(year_type = ifelse(year_type %in% c("Dry", "Critical", "Below Normal"), 
+                                             "Dry", "Wet")) |>
+  select(year, year_type) |> 
+  glimpse()
+
+# PORT OVER LOGIC FROM DSM FLOW TO CREATE FLOW UBJECTS 
+# TODO decide if I want to move this to DSMflow
+DSMflow::flows_cfs
 
 ```

@@ -21,89 +21,74 @@ a given watershed, for a period of years and number of units of effort.
 
 Actions are defined below:
 
-#TODO fit into 4Hs 
-
-#### Hydrology 
-* HYDRO 1: 
-* 5: Increase rearing survival by 1% 
-* 6: Increase migratory survival by 1% 
-* 7: Increase prespawn survival by 1% 
-PLUS hab benefits, see how I can package these together 
-
 #### Habitat 
-* HAB 1:
-* 2: Add 1 acre of spawning habitat
-* 3: Add 1 acres of inchannel rearing habitat
-* 4: Add 1 acres of floodplain rearing habitat
-* 8: Increase growth by moving up 1 category in bioenergetic transition (ex: med to high)
 
-#### Hatchery 
-* HATCH 1:
-* 9: Increase hatchery releases 1%
-* 10: Move hatchery releases to bay 1%
-* 11: Move hatchery releases to ocean 1%
+First define hydrology - and associated habitat
+
+* 1: Baseline Habitat 
+* 2: Theoretical Max Habitat 
+* 3: HRL habitat 
+
+Layer on additional actions 
+
+* 4: Rice Lands Salmon Rearing Practice Standard 
+* 5: Increase prey density 
+* 6: Decrease predation (scale contact points by 1/3)
+
+#TODO add these if needed for a scenario later 
+* 7: Add X acres of spawning habitat
+* 8: Add X acres of rearing habitat
+* 9: Add X acres of floodplain habitat
 
 #### Harvest 
-* HARV 1:
-* 12: Set harvest to only hatchery 
-* 14: Decrease ocean harvest 
-* 15: Decrease in river harvest 
 
-* 1: Do nothing
-* 2: Add 1 acre of spawning habitat
-* 3: Add 1 acres of inchannel rearing habitat
-* 4: Add 1 acres of floodplain rearing habitat
-* 5: Increase rearing survival by 1%
-* 6: Increase migratory survival by 1% 
-* 7: Increase prespawn survival by 1% 
-* 8: Increase growth by moving up 1 category in bioenergetic transition (ex: med to high)
-* 9: Increase hatchery releases 1%
-* 10: Move hatchery releases to bay 1%
-* 11: Move hatchery releases to ocean 1%
-* 12: Set harvest to only hatchery 
-* 13: Set harvest to only river 
+* 10: Baseline Harvest 
+* 11: Tribal harvest only 
+* 12: In river harvest only 
+* 13: Ocean harvest only 
+* 14: Intelligent CRR harvest
+* 15: Intelligent habitat harvest 
+* 16: Harvest only hatchery fish (ocean)
+* 17: Harvest only hatchery fish (tributary)
 
-# TODO think through if we want to reduce predation and where (can reduce contact points or decrease prop high predation)
+#### Hatchery 
+
+* 18: Baseline hatchery 
+* 19: Only terminal hatchery / outplanting 
+* 20: Phased hatcheries
+* 21: Release 50% in bay 
+
+#### Hydrology 
+* 22: Use 2019 BiOp hydrology 
+* 23: Use EFF hydrology 
+* 24: Use HRL hydrology 
 
 For more information run `?load_scenario` in the console.
 
-The following example builds a scenario of adding inchannel rearing to the 
-following watersheds for the fall run life cycle model:
+The following example builds the kitchen sink scenario:
 
-* 4 units of effort (2 acres) applied in Upper Sacramento River for the years 1980-1989
-* 2 unit of effort (2 acres) applied in Upper Sacramento River for the years 1990-1999
-* 2 unit of effort (2 acres) applied in American River for the years 1980-1989
-* 2 unit of effort (2 acres) applied in Feather River for the years 1980-1989
-* 2 unit of effort (2 acres) applied in Lower-mid Sacramento River for the years 1980-1989
-* 2 unit of effort (2 acres) applied in Battle Creek for the years 1990-1999
-* 2 unit of effort (2 acres) applied in Butte Creek for the years 1990-1999
-* 2 unit of effort (2 acres) applied in Deer Creek for the years 1990-1999
-* 2 unit of effort (2 acres) applied in Stanislaus River for the years 1990-1999
+Habitat
+* 2: Theoretical Max Habitat in all locations
+
+Harvest
+* 14: Intelligent CRR harvest
+* 16: Harvest only hatchery fish (ocean)
+
+Hatchery 
+* 19: Only terminal hatchery / outplanting 
+
+Hydrology
+* 23: Use EFF hydrology in all locations
 
 ```r
-
-habitats <- list(
-  spawning_habitat = fallRunDSM::params$spawning_habitat,
-  inchannel_habitat_fry = fallRunDSM::params$inchannel_habitat_fry,
-  inchannel_habitat_juvenile = fallRunDSM::params$inchannel_habitat_juvenile,
-  floodplain_habitat = fallRunDSM::params$floodplain_habitat,
-  weeks_flooded = fallRunDSM::params$weeks_flooded
-)
-
 scenario_df <- data.frame(
-  watershed = c("Upper Sacramento River", "Upper Sacramento River",
-                "American River", "Feather River", "Lower-mid Sacramento River",
-                "Battle Creek", "Butte Creek", "Deer Creek", "Stanislaus River"),
-  action = c(3, 3, 3, 3, 3, 3, 3, 3, 3),
-  start_year = c(1980, 1990, 1980, 1980, 1980, 1990, 1990, 1990, 1990),
-  end_year = c(1989, 1999, 1989, 1989, 1989, 1999, 1999, 1999, 1999),
-  units_of_effort = c(4, 2, 2, 2, 2, 2, 2, 2, 2))
+  watershed = rep("All", 5),
+  action = c(2, 14, 16, 19, 23),
+  years =  rep("All", 5))
 
-scenario <- get_action_matrices(scenario_df)
-
-scenario <- load_scenario(scenario = scenario,
+scenario <- load_scenario(scenario = scenario_df,
                           species = DSMscenario::species$FALL_RUN,
-                          habitat_inputs = habitats)
+                          params = fallRunDSM::r_to_r_baseline_params)
 
 ```
 
