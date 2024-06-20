@@ -40,6 +40,7 @@ load_scenario <- function(scenario, params = fallRunDSM::r_to_r_baseline_params,
   
   ### SET UP -------------------------------------------------------------------
   species <- match.arg(species)
+  action_numbers <- scenario$action
   max_habitat <- case_when(species == "fr" ~ fallRunDSM::r_to_r_tmh_params
                            # TODO add in SR and WR 
                            # species == "sr" ~ springRunDSM::r_to_r_tmh_params
@@ -110,8 +111,6 @@ load_scenario <- function(scenario, params = fallRunDSM::r_to_r_baseline_params,
     select(watershed, year, param) |> 
     distinct()
   
-  # join all params update to param type lookup 
-  
   
   # create final param object
   updated_params <- c(updated_habitat, updated_harvest, 
@@ -120,13 +119,17 @@ load_scenario <- function(scenario, params = fallRunDSM::r_to_r_baseline_params,
   final_params <- params
   
   # map through each row in the all_param_updates to pull in updates 
-  update_param <- function(final_params, updated_params, param_name, watershed, year) {
-    check_class <- class(final_params[[param_name]])
-    check_dim <- ifelse(check_class == c("matrix", "array"), dim(final_params[[param_name]]), NA)
+  update_param <- function(final_params = final_params, updated_params = updated_params, param_name, watershed, year) {
+    selected_param <- param_name
+    update_type <- param_type_lookup |> filter(param_name == selected_param) |> pull(update_type)
+    
     # TODO if has watershed == FALSE but action specified on watershed, through warning 
-    has_watershed <- ifelse(param_name %in% c("spawning_habitat", "inchannel_habitat_fry",
-                                              "inchannel_habitat_juvenile", "floodplain_habitat",
-                                              ))
+    has_watershed <- grepl(" wa",  update_type, fixed = TRUE)
+    delta <- grepl(update_type, " delta")
+    bypass <- grepl(update_type, " bypass")
+    month <- grepl(update_type, " m")
+    year <- grepl(update_type, " y")
+
     if (watershed == "All" & year == "All") {
       final_params[[param_name]] <- updated_params[[param_name]]
     } 
@@ -143,7 +146,7 @@ load_scenario <- function(scenario, params = fallRunDSM::r_to_r_baseline_params,
   # could do helper functions for each watershed 
   # All non action specified years, leave as baseline inputs (these are in params)
 
-  return(final_params)
+  return(final_params, all_param_updates)
 }
 
 
@@ -378,7 +381,7 @@ expand_row <- function(watershed, years, action) {
   relevent_action_params <- params_affected_by_action[[as.character(action)]] |> unlist()
   
   params_to_update <- expand.grid(watershed = watershed, 
-                                  year = year, 
+                                  year = years, 
                                   param = relevent_action_params) |> 
     mutate(action = action)
   return(params_to_update)

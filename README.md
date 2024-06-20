@@ -34,11 +34,9 @@ Layer on additional actions
 * 4: Rice Lands Salmon Rearing Practice Standard 
 * 5: Increase prey density 
 * 6: Decrease predation (scale contact points by 1/3)
-
-#TODO add these if needed for a scenario later 
-* 7: Add X acres of spawning habitat
-* 8: Add X acres of rearing habitat
-* 9: Add X acres of floodplain habitat
+* 7: Add X acres of spawning habitat (**placeholder**)
+* 8: Add X acres of rearing habitat (**placeholder**)
+* 9: Add X acres of floodplain habitat (**placeholder**)
 
 #### Harvest 
 
@@ -78,11 +76,11 @@ Hatchery
 * 19: Only terminal hatchery / outplanting 
 
 Hydrology
-* 23: Use EFF hydrology in all locations
+* 23: Use EFF hydrology on the Sacramento River
 
 ```r
 scenario_df <- data.frame(
-  watershed = rep("All", 5),
+  watershed = c(rep("All", 4), "Sacramento River"),
   action = c(2, 14, 16, 19, 23),
   years =  rep("All", 5))
 
