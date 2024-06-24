@@ -88,3 +88,14 @@ NULL
 #' @format list of 4 31 x 22 x 12 arrays.
 #' @details this data was re-exported from DSMhabitat::spawning_decay_multiplier
 "spawning_decay_multiplier"
+
+#' @title Param Type Lookup
+#' @description A dataframe with 2 columns and 46 rows. 
+#' 2 column describe parameter name, and parameter structure. This dataframe is used to update parameters. 
+#' @format A dataframe with 2 columns and 46 rows.
+"param_type_lookup"
+
+#' @title Scenario 
+#' @description A list that contains all the scenarios currently considered in the R2R process. 
+#' @format A names list containing scenario action tables. 
+"param_type_lookup"

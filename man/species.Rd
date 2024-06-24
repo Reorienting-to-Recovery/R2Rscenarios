@@ -35,11 +35,11 @@ scenario_df <- data.frame(watershed = c("Upper Sacramento River",
                                          1999, 1999, 1999),
                           units_of_effort = c(2, 1, 1, 1, 1, 1, 1, 1, 1))
 
-scenario <- load_scenario(scenario = DSMscenario::scenarios$ONE,
+scenario <- load_scenario(scenario = R2Rscenario::scenarios$ONE,
                           habitat_inputs = habitats,
-                          species = DSMscenario::species$FALL,
-                          spawn_decay_rate = DSMscenario::spawn_decay_rate,
-                          rear_decay_rate = DSMscenario::rear_decay_rate,
+                          species = R2Rscenario::species$FALL,
+                          spawn_decay_rate = R2Rscenario::spawn_decay_rate,
+                          rear_decay_rate = R2Rscenario::rear_decay_rate,
                           stochastic = TRUE)
 }
 \keyword{datasets}

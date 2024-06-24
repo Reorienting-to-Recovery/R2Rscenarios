@@ -67,6 +67,7 @@ The following example builds the kitchen sink scenario:
 
 Habitat
 * 2: Theoretical Max Habitat in all locations
+* 5: Increase prey density in all locations 
 
 Harvest
 * 14: Intelligent CRR harvest
@@ -80,12 +81,12 @@ Hydrology
 
 ```r
 scenario_df <- data.frame(
-  watershed = c(rep("All", 4), "Sacramento River"),
-  action = c(2, 14, 16, 19, 23),
-  years =  rep("All", 5))
+  watershed = c(rep("All", 6), "Sacramento River"),
+  action = c(2, 5, 6, 14, 16, 19, 23),
+  years =  rep("All", 7))
 
 scenario <- load_scenario(scenario = scenario_df,
-                          species = DSMscenario::species$FALL_RUN,
+                          species = R2Rscenario::species$FALL_RUN,
                           params = fallRunDSM::r_to_r_baseline_params)
 
 ```

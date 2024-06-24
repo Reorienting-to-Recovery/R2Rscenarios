@@ -121,7 +121,7 @@ param_type_lookup <- tibble(param_name = c("spawning_habitat", "inchannel_habita
                                            "stockton_flows", "CVP_exports", "SWP_exports", "proportion_diverted", 
                                            "total_diverted", "delta_proportion_diverted", "delta_total_diverted", 
                                            "prop_pulse_flows", "delta_inflow", "cc_gates_days_closed", "cc_gates_prop_days_closed", 
-                                           "proportion_flow_bypass", "gates_overtopped", "flows_oct_nov", 
+                                           "proportion_flow_bypasses", "gates_overtopped", "flows_oct_nov", 
                                            "flows_apr_may"),
                             update_type = c("3D matrix - wa, m, y", 
                                      "3D matrix - wa, m, y",
@@ -148,7 +148,7 @@ param_type_lookup <- tibble(param_name = c("spawning_habitat", "inchannel_habita
                                      "single value",
                                      "single value",
                                      "single value",
-                                     "list of matrices by y - wa, sc",
+                                     "3D matrix - wa, m, y",
                                      "single value",
                                      "single value",
                                      "2D matrix - m, y",
@@ -170,4 +170,4 @@ param_type_lookup <- tibble(param_name = c("spawning_habitat", "inchannel_habita
                                      "2D matrix - wa, y",
                                      "2D matrix - wa, y"
                                      ))
-usethis::use_data(param_type_lookup)
+usethis::use_data(param_type_lookup, overwrite = TRUE)

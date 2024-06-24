@@ -78,13 +78,13 @@ load_scenario <- function(scenario, params = fallRunDSM::r_to_r_baseline_params,
   }
   
   # Ensure that habitat additions are less than TMH 
-  updated_habitat$spawning_habitat <- pmin(updated_habitat$spawning_habitat, eval(parse(text = paste0("DSMhabitat::", species, "_spawn$r_to_r_tmh")))) 
-  updated_habitat$inchannel_habitat_fry <- pmin(updated_habitat$inchannel_habitat_fry, eval(parse(text = paste0("DSMhabitat::", species, "_fry$r_to_r_tmh")))) 
-  updated_habitat$inchannel_habitat_juvenile <- pmin(updated_habitat$inchannel_habitat_juvenile, eval(parse(text = paste0("DSMhabitat::", species, "_juv$r_to_r_tmh")))) 
-  updated_habitat$floodplain_habitat <- pmin(updated_habitat$floodplain_habitat, eval(parse(text = paste0("DSMhabitat::", species, "_fp$r_to_r_tmh"))))
-  updated_habitat$sutter_habitat <- pmin(updated_habitat$sutter_habitat, DSMhabitat::sutter_habitat$biop_itp_2018_2019)
-  updated_habitat$yolo_habitat <- pmin(updated_habitat$yolo_habitat, DSMhabitat::yolo_habitat$biop_itp_2018_2019)
-  updated_habitat$delta_habitat <- pmin(updated_habitat$delta_habitat, DSMhabitat::delta_habitat$r_to_r_tmh)
+  # updated_habitat$spawning_habitat <- pmin(updated_habitat$spawning_habitat, eval(parse(text = paste0("DSMhabitat::", species, "_spawn$r_to_r_tmh")))) 
+  # updated_habitat$inchannel_habitat_fry <- pmin(updated_habitat$inchannel_habitat_fry, eval(parse(text = paste0("DSMhabitat::", species, "_fry$r_to_r_tmh")))) 
+  # updated_habitat$inchannel_habitat_juvenile <- pmin(updated_habitat$inchannel_habitat_juvenile, eval(parse(text = paste0("DSMhabitat::", species, "_juv$r_to_r_tmh")))) 
+  # updated_habitat$floodplain_habitat <- pmin(updated_habitat$floodplain_habitat, eval(parse(text = paste0("DSMhabitat::", species, "_fp$r_to_r_tmh"))))
+  # updated_habitat$sutter_habitat <- pmin(updated_habitat$sutter_habitat, DSMhabitat::sutter_habitat$biop_itp_2018_2019)
+  # updated_habitat$yolo_habitat <- pmin(updated_habitat$yolo_habitat, DSMhabitat::yolo_habitat$biop_itp_2018_2019)
+  # updated_habitat$delta_habitat <- pmin(updated_habitat$delta_habitat, DSMhabitat::delta_habitat$r_to_r_tmh)
   
   ### harvest modifications ----------------------------------------------------
   updated_harvest <- apply_harvest_actions(scenario = scenario, 
@@ -119,39 +119,58 @@ load_scenario <- function(scenario, params = fallRunDSM::r_to_r_baseline_params,
   final_params <- params
   
   # map through each row in the all_param_updates to pull in updates 
-  update_param <- function(final_params = final_params, updated_params = updated_params, param_name, watershed, year) {
-    selected_param <- param_name
-    update_type <- param_type_lookup |> filter(param_name == selected_param) |> pull(update_type)
-    
-    # TODO if has watershed == FALSE but action specified on watershed, through warning 
-    has_watershed <- grepl(" wa",  update_type, fixed = TRUE)
-    delta <- grepl(update_type, " delta")
-    bypass <- grepl(update_type, " bypass")
-    month <- grepl(update_type, " m")
-    year <- grepl(update_type, " y")
-
-    if (watershed == "All" & year == "All") {
-      final_params[[param_name]] <- updated_params[[param_name]]
-    } 
-    else if (watershed == "All" & year != "All") {
-      # year indexing depends on 
-      
-    }   
-    else if (watershed != "All" & year == "All") {
-      # year indexing depends on 
-      
-    }
-  }
-  pmap(update_param)
+  for (i in 1:nrow(all_param_updates)) {
+    selected_watershed <- all_param_updates[i, "watershed"] |> as.character()
+    selected_year <- all_param_updates[i, "year"] |> as.character()
+    selected_param <- all_param_updates[i, "param"] |> as.character()
+    # print(i)
+    # print(selected_param)
+    scenario_param <- update_param(final_params = final_params,
+                                 updated_params = updated_params, 
+                                 watershed = selected_watershed, 
+                                 year = selected_year, 
+                                 param_name = selected_param)
+    final_params[[selected_param]] <- scenario_param[[selected_param]]
+   }
   # could do helper functions for each watershed 
   # All non action specified years, leave as baseline inputs (these are in params)
 
-  return(final_params, all_param_updates)
+  return(final_params)
 }
 
-
-
-
+#' Apply Habitat Actions to Update Habitat Conditions
+#'
+#' This function updates habitat conditions based on the provided scenario, parameters, starting habitat, starting hydrology, and species.
+#'
+#' @param scenario A list containing the actions to be applied to the habitat.
+#' @param params A list of parameters including prey density, prop_high_predation, contact_points, delta_contact_points, delta_prop_high_predation.
+#' @param starting_habitat A string specifying the starting habitat type.
+#' @param starting_hydrology A string specifying the starting hydrology type.
+#' @param species A string specifying the species for which habitat is being updated.
+#'
+#' @return A list containing the updated habitat conditions for spawning habitat, inchannel habitat for fry and juvenile stages, floodplain habitat, yolo habitat, sutter habitat, delta habitat, weeks flooded, average temperature, and degree days.
+#' 
+#' @details
+#' The function performs several actions based on the provided scenario:
+#' \itemize{
+#'   \item Updates habitat conditions based on the species and starting habitat type actions 1 - 3.
+#'   \item Applies action 4 to update yolo habitat based on rice lands salmon rearing practice.
+#'   \item Applies action 5 to increase prey density.
+#'   \item Applies action 6 to decrease predation by scaling contact points.
+#' }
+#'
+#' @examples
+#' \dontrun{
+#' scenario <- data.frame('watershed = c(rep("All", 6), "Sacramento River"),
+#'                        action = c(2, 5, 6, 14, 16, 19, 23),
+#'                        years =  rep("All", 7))
+#' params <- fallRunDSM::r_to_r_baseline_params
+#' starting_habitat <- "r_to_r_tmh_eff"
+#' starting_hydrology <- "sac_eff"
+#' species <- "fr"
+#' updated_habitat <- apply_habitat_actions(scenario, params, starting_habitat, starting_hydrology, species)
+#' 
+#' @export
 apply_habitat_actions <- function(scenario, params, starting_habitat, starting_hydrology, species) {
   #TODO add check to ensure they have picked one base hydrology 
   
@@ -204,7 +223,41 @@ apply_habitat_actions <- function(scenario, params, starting_habitat, starting_h
   
   return(updated_habitat)
 }
-
+#' Apply Harvest Actions to Update Harvest Parameters
+#'
+#' This function updates harvest parameters based on the provided scenario, parameters, and species.
+#'
+#' @param scenario A list containing the actions to be applied to the harvest parameters.
+#' @param params A list of parameters including restrict_harvest_to_hatchery_ocean, restrict_harvest_to_hatchery_trib, ocean_harvest_percentage, tributary_harvest_percentage, crr_scaling, no_cohort_harvest_years, intelligent_crr_harvest, intelligent_hatchery_harvest, preserve_tribal_harvest.
+#' @param species A string specifying the species for which harvest parameters are being updated.
+#'
+#' @return A list containing the updated harvest parameters.
+#' 
+#' @details
+#' The function performs several actions based on the provided scenario:
+#' \itemize{
+#'   \item Updates harvest parameters based on the baseline values provided in params.
+#'   \item Applies action 11 to preserve tribal harvest.
+#'   \item Applies action 12 to set in-river harvest only.
+#'   \item Applies action 13 to set ocean harvest only.
+#'   \item Applies action 14 to enable intelligent CRR harvest.
+#'   \item Applies action 15 to enable intelligent habitat harvest.
+#'   \item Applies action 16 to restrict ocean harvest to hatchery fish only.
+#'   \item Applies action 17 to restrict tributary harvest to hatchery fish only.
+#' }
+#'
+#' @examples
+#' \dontrun{
+#' scenario <- data.frame('watershed = c(rep("All", 6), "Sacramento River"),
+#'                        action = c(2, 5, 6, 14, 16, 19, 23),
+#'                        years =  rep("All", 7))
+#' params <- fallRunDSM::r_to_r_baseline_params
+#' species <- "fr"
+#' updated_harvest <- apply_harvest_actions(scenario, params, species)
+#' }
+#' 
+#' @export
+#' 
 apply_harvest_actions <- function(scenario, params, species) {
   # * 10: Baseline Harvest (default run this first)
     updated_harvest <- list(restrict_harvest_to_hatchery_ocean = params$restrict_harvest_to_hatchery_ocean,
@@ -250,7 +303,6 @@ apply_harvest_actions <- function(scenario, params, species) {
   return(updated_harvest)
 }
 
-
 apply_hatchery_actions <- function(scenario, params, species) {
   # * 18: Baseline hatchery 
   updated_hatchery <- list(hatchery_release = params$hatchery_release, 
@@ -259,6 +311,8 @@ apply_hatchery_actions <- function(scenario, params, species) {
   # * 19: Only terminal hatchery / outplanting 
   if (19 %in% scenario$action) {
   updated_hatchery$terminal_hatchery_logic <-  TRUE
+  params$hatchery_release[params$hatchery_release > 0] <- 0
+  updated_hatchery$hatchery_release <- params$hatchery_release
   } 
   # * 20: Phased hatcheries 
   if (20 %in% scenario$action) {
@@ -328,8 +382,7 @@ apply_hydrology_actions <- function(scenario, params, starting_hydrology, specie
   return(updated_hydrology)
 }
 
-
-# helper function 
+# helper functions 
 expand_row <- function(watershed, years, action) {
   params_affected_by_action <- list("1" = list("spawning_habitat", "inchannel_habitat_fry",
                                                "inchannel_habitat_juvenile", "floodplain_habitat",
@@ -359,7 +412,7 @@ expand_row <- function(watershed, years, action) {
                                     "16" = list("restrict_harvest_to_hatchery_ocean"), 
                                     "17" = list("intelligent_habitat_harvest"), 
                                     "18" = list(), # TODO this is just baseline so do not need to update anything? Confirm
-                                    "19" = list("terminal_hatchery_logic"),
+                                    "19" = list("terminal_hatchery_logic", "hatchery_release"),
                                     "20" = list("hatchery_release"),
                                     "21" = list("hatchery_release_proportion_bay"),
                                     "22" = list("upper_sacramento_flows", "freeport_flows", "vernalis_flows",
@@ -387,5 +440,107 @@ expand_row <- function(watershed, years, action) {
   return(params_to_update)
 }
 
+update_param <- function(final_params = final_params, updated_params = updated_params, param_name, watershed, year) {
+  selected_parameter <- param_name
+  update_type <- param_type_lookup |> filter(param_name == selected_parameter) |> pull(update_type)
+  if (update_type == "character(0)") warning(paste("There is no param named", selected_parameter, "in the param_type_lookup."))
+  # TODO if has watershed == FALSE but action specified on watershed, through warning 
+  # Includes
+  has_watershed <- grepl(" wa",  update_type, fixed = TRUE)
+  has_delta <- grepl(" delta", update_type)
+  has_bypass <- grepl(" bypass", update_type)
+  has_month <- grepl(" m", update_type)
+  has_year <- grepl(" y", update_type)
+  # Type 
+  two_d_matrix <- grepl("2D", update_type)
+  three_d_matrix <- grepl("3D", update_type)
+  vector <- grepl("vector", update_type)
+  single_value <- grepl("single value", update_type)
+  list_of_matricies <- grepl("list of matrices", update_type)
+  
+  if (any(watershed == "Sacramento River")) {
+   watershed <- c("Upper Sacramento River", "Upper-mid Sacramento River", "Lower-mid Sacramento River", "Lower Sacramento River")
+  } 
+  
+  # First deal with the ones that you will update the full params list 
+  if (any(watershed == "All") & any(year == "All")) {
+    final_params[[param_name]] <- updated_params[[param_name]]
+  } 
+  
+  if (single_value) {
+    final_params[[param_name]] <- updated_params[[param_name]]
+  } else if (single_value & any(watershed != "All") & any(year != "All")) {
+    # all these apply for all years and locations  
+    message <- paste("The parameter:", param_name, "can not be adjusted by watershed and year. This param must remain consistant throughout the simulation.")
+    warning(message)
+  } 
+  
+  # Now update ones that have distinct years but are applied to all watersheds 
+  if (any(watershed == "All") & any(year != "All") & has_year) {
+    # year indexing depends on 
+    if (three_d_matrix) {
+      final_params[[param_name]][,, year] <- updated_params[[param_name]][,, year]
+    }
+    if (two_d_matrix){
+      final_params[[param_name]][, year] <- updated_params[[param_name]][, year]
+    }
+    if (list_of_matricies) {
+      final_params[[param_name]][year] <- updated_params[[param_name]][year]
+    }
+  } 
+  
+  # Now update ones with distinct watersheds but applied to all years 
+  if (any(watershed != "All") & any(year == "All")) {
+    # year indexing depends on 
+    if (three_d_matrix) {
+      if (has_watershed) {
+        final_params[[param_name]][watershed,,] <- updated_params[[param_name]][watershed,,]
+      }
+      if (has_delta | has_bypass) {
+        if (any(watershed %in% c("North Delta", "South Delta"))) {
+        final_params[[param_name]][,,watershed] <- updated_params[[param_name]][,,watershed]
+        } 
+        if (any(watershed %in% c("Sutter Bypass", "Yolo Bypass"))){
+          final_params[[param_name]][,,watershed] <- updated_params[[param_name]][,,watershed]
+        }
+      }
+    }
+    if (two_d_matrix & has_watershed & any(watershed %in% c("American River", "Battle Creek", "Feather River", "Merced River", "Mokelumne River"))){
+      # only watershed 
+      final_params[[param_name]][watershed, ] <- updated_params[[param_name]][watershed, ]
+    } else if (two_d_matrix){
+      # only watershed 
+      final_params[[param_name]] <- updated_params[[param_name]]
+    }
+    # TODO check to see if we want a vector delta vs vector watershed
+    if (vector){
+      final_params[[param_name]][watershed] <- updated_params[[param_name]][watershed]
+    }
+    if (list_of_matricies) {
+      # TODO we should udpate hatchery release to be in a different format
+    }
+  }
+  
+  # now update ones with distinct watersheds and years
+  if (any(watershed != "All") & any(year != "All")) {
+    # year indexing depends on 
+    if (three_d_matrix) {
+      if (has_watershed) {
+        final_params[[param_name]][watershed, , year] <- updated_params[[param_name]][watershed,, year]
+      }
+      if (has_delta | has_bypass) {
+        final_params[[param_name]][, year, watershed] <- updated_params[[param_name]][, year, watershed]
+      }
+    }
+    if (two_d_matrix & has_year){
+      # only watershed 
+      final_params[[param_name]][watershed, year] <- updated_params[[param_name]][watershed, year]
+    }
+    if (vector){
+      warning(paste("The selected param:", param_name, "does not allow you to specify year. Please update scenario" ))
+    }
+  }
+  return(final_params)
 
+}
 

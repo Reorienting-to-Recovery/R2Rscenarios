@@ -6,19 +6,17 @@
 \usage{
 load_scenario(
   scenario,
-  habitat_inputs,
+  params = fallRunDSM::r_to_r_baseline_params,
   species = c("fr", "wr", "sr", "st", "lfr"),
-  spawn_decay_rate = DSMscenario::spawn_decay_rate,
-  rear_decay_rate = DSMscenario::rear_decay_rate,
-  stochastic = TRUE
+  spawn_decay_rate = fallRunDSM::r_to_r_baseline_params$spawn_decay_rate,
+  rear_decay_rate = fallRunDSM::r_to_r_baseline_params$rear_decay_rate,
+  spawn_decay_multiplier = fallRunDSM::r_to_r_baseline_params$spawn_decay_multiplier
 )
 }
 \arguments{
 \item{scenario}{a list containing scenario information, see details below}
 
-\item{habitat_inputs}{a list with spawning habitat, inchannel fry and juvenile rearing habitat,
-floodplain rearing habitat, and weeks flooded matrices from the lifecycle model
-"params" data object. See the example for more details.}
+\item{params}{Lifecycle model"params" data object. See the example for more details.}
 
 \item{species}{provide \code{"fr"}, \code{"lfr"}, \code{"wr"}, \code{"sr"}, or \code{"st"} for fall run, late-fall run,
 winter run, spring run, or steelhead respectively to designate which \code{params} data object
@@ -45,29 +43,16 @@ A scenario can also include a boolean vector named \code{no_decay} if the user
 desires to exclude a watershed from spawning and rearing habitat decay.
 }
 \examples{
-scenario_df <- dplyr::tibble(watershed = "Lower Sacramento River",
-                      action = 3,
-                      start_year = 1980,
-                      end_year = 1999,
-                      units_of_effort = 1)
-no_decay_alt <- watershed_labels \%in\% c("Clear Creek", "Butte Creek", "Upper Sacramento River")
-names(no_decay_alt) <- watershed_labels
-custom_scenario <- get_action_matrices(scenario_df)
-custom_scenario$no_decay <- no_decay_alt
+scenario_df <- data.frame(watershed = rep("All", 5), 
+                          action = c(2, 14, 16, 18, 21), 
+                          years = rep("All", 5))
 
-habitats <- list(
-  spawning_habitat = fallRunDSM::params$spawning_habitat,
-  inchannel_habitat_fry = fallRunDSM::params$inchannel_habitat_fry,
-  inchannel_habitat_juvenile = fallRunDSM::params$inchannel_habitat_juvenile,
-  floodplain_habitat = fallRunDSM::params$floodplain_habitat,
-  weeks_flooded = fallRunDSM::params$weeks_flooded
-)
+custom_scenario <- get_action_matrices()
+
+params <- fallRunDSM::r_to_r_baseline_params
 
 scenario_custom <- load_scenario(scenario = custom_scenario,
-                                 species = DSMscenario::species$FALL_RUN,
-                                 habitat_inputs = habitats)
+                                 species = R2Rscenario::species$FALL_RUN,
+                                 params = params)
 
-scenario_one <- load_scenario(scenario = DSMscenario::scenarios$ONE,
-                              species = DSMscenario::species$FALL_RUN,
-                              habitat_inputs = habitats)
 }

@@ -25,7 +25,7 @@ feasibility of habitat restoration over twenty years as well as physical limitat
 }
 \examples{
 # Subset by run to find max spawn and rear habitat area
-DSMscenario::max_spawn_area$FALL
-DSMscenario::max_rear_area$FALL
+R2Rscenario::max_spawn_area$FALL
+R2Rscenario::max_rear_area$FALL
 }
 \keyword{datasets}
