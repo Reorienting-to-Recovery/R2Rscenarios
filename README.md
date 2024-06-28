@@ -48,6 +48,7 @@ Layer on additional actions
 * 15: Intelligent habitat harvest 
 * 16: Harvest only hatchery fish (ocean)
 * 17: Harvest only hatchery fish (tributary)
+* 25: No harvest of dry year cohort 
 
 #### Hatchery 
 

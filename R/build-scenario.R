@@ -57,7 +57,7 @@ load_scenario <- function(scenario, params = fallRunDSM::r_to_r_baseline_params,
                                 2 %in% action_numbers & 
                                   starting_hydrology == "biop_itp_2018_2019" ~ "r_to_r_tmh", 
                                 1 %in% action_numbers & 
-                                  starting_hydrology == "feff_sac" ~ "r_to_r_eff_baseline", 
+                                  starting_hydrology == "eff_sac" ~ "r_to_r_eff_baseline", 
                                 2 %in% action_numbers & 
                                   starting_hydrology == "eff_sac" ~ "r_to_r_tmh_eff", 
                                 3 %in% action_numbers ~ "hrl"  #todo add this when we get HRL 
@@ -121,10 +121,10 @@ load_scenario <- function(scenario, params = fallRunDSM::r_to_r_baseline_params,
   # map through each row in the all_param_updates to pull in updates 
   for (i in 1:nrow(all_param_updates)) {
     selected_watershed <- all_param_updates[i, "watershed"] |> as.character()
-    selected_year <- all_param_updates[i, "year"] |> as.character()
+    selected_year <- all_param_updates[i, "year"] |> unlist()
     selected_param <- all_param_updates[i, "param"] |> as.character()
-    # print(i)
-    # print(selected_param)
+    print(i)
+    print(selected_param)
     scenario_param <- update_param(final_params = final_params,
                                  updated_params = updated_params, 
                                  watershed = selected_watershed, 
@@ -299,6 +299,10 @@ apply_harvest_actions <- function(scenario, params, species) {
   if (17 %in% scenario$action) { 
     updated_harvest$restrict_harvest_to_hatchery_trib = TRUE
   }
+  if (25 %in% scenario$action) { 
+    # TODO might want to make this more generalizable to year...instead of just doing no harvest of dry year cohorts
+    updated_harvest$no_cohort_harvest_years = c(2, 6, 8, 9, 10, 11, 12, 13, 15)
+  }
 
   return(updated_harvest)
 }
@@ -375,7 +379,7 @@ apply_hydrology_actions <- function(scenario, params, starting_hydrology, specie
                             delta_inflow = eval(parse(text = paste0("DSMflow::delta_inflow$", ifelse(is_calsim_output_version, starting_hydrology, "biop_itp_2018_2019")))),
                             cc_gates_days_closed = eval(parse(text = paste0("DSMflow::delta_cross_channel_closed$", ifelse(is_calsim_output_version, starting_hydrology, "biop_itp_2018_2019"))))[1, ],
                             cc_gates_prop_days_closed = eval(parse(text = paste0("DSMflow::delta_cross_channel_closed$", ifelse(is_calsim_output_version, starting_hydrology, "biop_itp_2018_2019"))))[2, ],
-                            proportion_flow_bypasses = eval(parse(text = paste0("DSMflow::proportion_flow_bypasses$", ifelse(is_calsim_output_version, starting_hydrology, "biop_itp_2018_2019")))), 
+                            proportion_flow_bypass = eval(parse(text = paste0("DSMflow::proportion_flow_bypasses$", ifelse(is_calsim_output_version, starting_hydrology, "biop_itp_2018_2019")))), 
                             gates_overtopped = eval(parse(text = paste0("DSMflow::gates_overtopped$", ifelse(is_calsim_output_version, starting_hydrology, "biop_itp_2018_2019")))), 
                             flows_oct_nov = eval(parse(text = paste0("DSMflow::hatchery_oct_nov_flows$", ifelse(is_calsim_output_version, starting_hydrology, "biop_itp_2018_2019")))),  
                             flows_apr_may = eval(parse(text = paste0("DSMflow::hatchery_apr_may_flows$", ifelse(is_calsim_output_version, starting_hydrology, "biop_itp_2018_2019")))))
@@ -419,24 +423,24 @@ expand_row <- function(watershed, years, action) {
                                                 "stockton_flows", "CVP_exports", "SWP_exports", "proportion_diverted",
                                                 "total_diverted", "delta_proportion_diverted", "delta_total_diverted",
                                                 "prop_pulse_flows", "delta_inflow", "cc_gates_days_closed", "cc_gates_prop_days_closed",
-                                                "proportion_flow_bypasses", "gates_overtopped", "flows_oct_nov", "flows_apr_may"),
+                                                "proportion_flow_bypass", "gates_overtopped", "flows_oct_nov", "flows_apr_may"),
                                     "23" = list("upper_sacramento_flows", "freeport_flows", "vernalis_flows",
                                                 "stockton_flows", "CVP_exports", "SWP_exports", "proportion_diverted",
                                                 "total_diverted", "delta_proportion_diverted", "delta_total_diverted",
                                                 "prop_pulse_flows", "delta_inflow", "cc_gates_days_closed", "cc_gates_prop_days_closed",
-                                                "proportion_flow_bypasses", "gates_overtopped", "flows_oct_nov", "flows_apr_may"),
+                                                "proportion_flow_bypass", "gates_overtopped", "flows_oct_nov", "flows_apr_may"),
                                     "24" = list("upper_sacramento_flows", "freeport_flows", "vernalis_flows",
                                                 "stockton_flows", "CVP_exports", "SWP_exports", "proportion_diverted",
                                                 "total_diverted", "delta_proportion_diverted", "delta_total_diverted",
                                                 "prop_pulse_flows", "delta_inflow", "cc_gates_days_closed", "cc_gates_prop_days_closed",
-                                                "proportion_flow_bypasses", "gates_overtopped", "flows_oct_nov", "flows_apr_may")) 
+                                                "proportion_flow_bypass", "gates_overtopped", "flows_oct_nov", "flows_apr_may")) 
   
   relevent_action_params <- params_affected_by_action[[as.character(action)]] |> unlist()
   
   params_to_update <- expand.grid(watershed = watershed, 
-                                  year = years, 
                                   param = relevent_action_params) |> 
-    mutate(action = action)
+    mutate(action = action,
+           year = list(years))
   return(params_to_update)
 }
 
@@ -457,6 +461,7 @@ update_param <- function(final_params = final_params, updated_params = updated_p
   vector <- grepl("vector", update_type)
   single_value <- grepl("single value", update_type)
   list_of_matricies <- grepl("list of matrices", update_type)
+  year <- unlist(year)
   
   if (any(watershed == "Sacramento River")) {
    watershed <- c("Upper Sacramento River", "Upper-mid Sacramento River", "Lower-mid Sacramento River", "Lower Sacramento River")
@@ -529,10 +534,19 @@ update_param <- function(final_params = final_params, updated_params = updated_p
         final_params[[param_name]][watershed, , year] <- updated_params[[param_name]][watershed,, year]
       }
       if (has_delta | has_bypass) {
-        final_params[[param_name]][, year, watershed] <- updated_params[[param_name]][, year, watershed]
+        if (any(watershed %in% c("North Delta", "South Delta"))) {
+          final_params[[param_name]][, year, watershed] <- updated_params[[param_name]][, year, watershed]
+        } 
+        if (any(watershed %in% c("Sutter Bypass", "Yolo Bypass"))){
+          final_params[[param_name]][, year, watershed] <- updated_params[[param_name]][, year, watershed]
+        }
+        else {
+          final_params[[param_name]][, year, ] <- updated_params[[param_name]][, year, ] 
+          
+        }
       }
     }
-    if (two_d_matrix & has_year){
+    if (two_d_matrix & has_year & has_watershed){
       # only watershed 
       final_params[[param_name]][watershed, year] <- updated_params[[param_name]][watershed, year]
     }
