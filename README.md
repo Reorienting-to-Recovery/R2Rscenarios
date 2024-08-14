@@ -38,6 +38,7 @@ Layer on additional actions
 * 8: Decrease predation (HRL)
 * 27: Effects of spring run weir
 * 28: Effects of above-dam spring run habitat
+* 29: TODO add 20,000 acres to floodplain habitat
 * : Add X acres of spawning habitat (**placeholder**)
 * : Add X acres of rearing habitat (**placeholder**)
 * : Add X acres of floodplain habitat (**placeholder**)

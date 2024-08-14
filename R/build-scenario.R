@@ -206,9 +206,9 @@ apply_habitat_actions <- function(scenario, params, starting_habitat, starting_h
   } 
   if(7 %in% scenario$action) {
     updated_habitat$prey_density <- params$prey_density
-    updated_habitat$prey_density[17] <- rep("max", 20) # Sutter Bypass
-    updated_habitat$prey_density[21] <- rep("max", 20) # Colusa Basin, lower-mid sac
-    updated_habitat$prey_density[24] <- rep("max", 20) # Colusa Basin, lower sac
+    updated_habitat$prey_density[17,] <- rep("max", 20) # Sutter Bypass
+    updated_habitat$prey_density[21,] <- rep("max", 20) # Colusa Basin, lower-mid sac
+    updated_habitat$prey_density[24,] <- rep("max", 20) # Colusa Basin, lower sac
   } else {
     updated_habitat$prey_density <- params$prey_density
     updated_habitat$prey_density_delta <- params$prey_density_delta
@@ -233,12 +233,12 @@ apply_habitat_actions <- function(scenario, params, starting_habitat, starting_h
   # TODO additional habitat modifications = adding acres and doing rice field practice
   
   if(27 %in% scenario$action) {
-    updated_habitat$spawning_habitat = create_weir_effect_on_spawning_habitat(updated_habitat$spawning_habitat)
+    updated_habitat$spawning_habitat = create_weir_effect_on_spawning_habitat(updated_habitat)
   }
   
-  if(28 %in% scenario_action) {
-    updated_habitat$inchannel_habitat_juvenile = create_spring_run_effect_on_fall_run_juvenile_habitat(habitat_object)$inchannel_habitat_juv_sr_effect
-    updated_habitat$floodplain_habitat = create_spring_run_effect_on_fall_run_juvenile_habitat(habitat_object)$floodplain_habitat_sr_effect
+  if(28 %in% scenario$action) {
+    updated_habitat$inchannel_habitat_juvenile = create_spring_run_effect_on_fall_run_juvenile_habitat(updated_habitat)$inchannel_habitat_juv_sr_effect
+    updated_habitat$floodplain_habitat = create_spring_run_effect_on_fall_run_juvenile_habitat(updated_habitat)$floodplain_habitat_sr_effect
   }
   
   return(updated_habitat)
@@ -341,7 +341,7 @@ apply_hatchery_actions <- function(scenario, params, species) {
   } 
   # * 20: Phased hatcheries 
   if (20 %in% scenario$action) {
-    updated_hatchery$hatchery_release <- create_phased_hatchery_release(hatchery_object, 
+    updated_hatchery$hatchery_release <- create_phased_hatchery_release(updated_hatchery, 
                                                                         strategy = "high_early_years") 
   } 
   # * 21: Release 50% in bay 
@@ -353,7 +353,7 @@ apply_hatchery_actions <- function(scenario, params, species) {
   # * 26: install weir at hatchery, remove 20% hatchery? 
   # TODO confirm these methods
   if (26 %in% scenario$action) {
-    updated_hatchery$proportion_hatchery = params$updated_hatchery * .80
+    updated_hatchery$proportion_hatchery = params$proportion_hatchery * .80
   }
   return(updated_hatchery)
 }
@@ -399,8 +399,8 @@ expand_row <- function(watershed, years, action) {
                                     "5" = list("prey_density", "prey_density_delta"), 
                                     "6" = list("prop_high_predation", "contact_points", "delta_contact_points",
                                                "delta_prop_high_predation"),
-                                    "7" = list(), # TODO 
-                                    "8" = list(), # TODO 
+                                    "7" = list("prey_density"),  
+                                    "8" = list("contact_points"), 
                                     "9" = list(), # TODO 
                                     "10" = list(), # TODO this is just baseline so do not need to update anything? Confirm
                                     "11" = list("preserve_tribal_harvest"), 
@@ -428,7 +428,10 @@ expand_row <- function(watershed, years, action) {
                                                 "stockton_flows", "CVP_exports", "SWP_exports", "proportion_diverted",
                                                 "total_diverted", "delta_proportion_diverted", "delta_total_diverted",
                                                 "prop_pulse_flows", "delta_inflow", "cc_gates_days_closed", "cc_gates_prop_days_closed",
-                                                "proportion_flow_bypass", "gates_overtopped", "flows_oct_nov", "flows_apr_may")) 
+                                                "proportion_flow_bypass", "gates_overtopped", "flows_oct_nov", "flows_apr_may"),
+                                    "26" = list("proportion_hatchery"),
+                                    "27" = list("spawning_habitat"),
+                                    "28" = list("inchannel_habitat_juvenile", "floodplain_habitat"))
   
   relevent_action_params <- params_affected_by_action[[as.character(action)]] |> unlist()
   
