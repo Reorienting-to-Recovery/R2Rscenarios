@@ -171,3 +171,4 @@ param_type_lookup <- tibble(param_name = c("spawning_habitat", "inchannel_habita
                                      "2D matrix - wa, y"
                                      ))
 usethis::use_data(param_type_lookup, overwrite = TRUE)
+

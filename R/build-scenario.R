@@ -341,41 +341,8 @@ apply_hatchery_actions <- function(scenario, params, species) {
   } 
   # * 20: Phased hatcheries 
   if (20 %in% scenario$action) {
-  # TODO update this with function?
-  # phase 1 - current release
-  phased_release <- params$hatchery_release 
-  phased_release[1:5] <- list(params$hatchery_release[[1]],
-                              params$hatchery_release[[1]],
-                              params$hatchery_release[[1]],
-                              params$hatchery_release[[1]],
-                              params$hatchery_release[[1]])
-  
-  # phase 2 - remove 2 or 5 FR hatcheries 
-  # TODO update this logic for other runs
-  remove_2_hatcheries <- params$hatchery_release[[1]]
-  
-  # options we could remove 
-  # coleman - battle creek, 
-  # nibus - american river, 
-  # feather - feather rivr, 
-  # mokeulmne - mokelumne river, 
-  # merced - merced river
-  
-  # Remove coleman ()
-  remove_2_hatcheries["Battle Creek" , ] <- c(0, 0, 0 , 0)
-  remove_2_hatcheries["Feather Creek" , ] <- c(0, 0, 0 , 0)
-  
-  phased_release[6:10] <- list(remove_2_hatcheries, 
-                               remove_2_hatcheries, 
-                               remove_2_hatcheries, 
-                               remove_2_hatcheries, 
-                               remove_2_hatcheries)
-  
-  # last 10 years release is at 0 
-  no_hatchery <- matrix(0, ncol = 4, nrow = 31, dimnames = list(fallRunDSM::watershed_labels, c("s", "m", "l", "xl")))
-  phased_release[11:20] <- rep(list(no_hatchery)[1], 10)
-  
-  updated_hatchery$hatchery_release <-  phased_release 
+    updated_hatchery$hatchery_release <- create_phased_hatchery_release(hatchery_object, 
+                                                                        strategy = "high_early_years") 
   } 
   # * 21: Release 50% in bay 
   # TODO confirm that works 
@@ -383,7 +350,7 @@ apply_hatchery_actions <- function(scenario, params, species) {
     updated_hatchery$hatchery_release_proportion_bay <- .5
   } 
   
-  # install weir at hatchery, remove 20% hatchery? 
+  # * 26: install weir at hatchery, remove 20% hatchery? 
   # TODO confirm these methods
   if (26 %in% scenario$action) {
     updated_hatchery$proportion_hatchery = params$updated_hatchery * .80
@@ -642,5 +609,74 @@ create_spring_run_effect_on_fall_run_juvenile_habitat <- function(habitat_object
   
   return(list("inchannel_habitat_juv_sr_effect" = inchannel_habitat_juv_sr_effect,
               "floodplain_habitat_sr_effect" = floodplain_habitat_sr_effect))
+  
+}
+
+# create phased hatchery release
+create_phased_hatchery_release <- function(hatchery_object, strategy = c("phased_closures",
+                                                                         "high_early_years")) {
+  phased_release <- hatchery_object$hatchery_release 
+  
+  if(strategy == "phased_closures") {
+  
+    # phase 1 - current release
+    phased_release[1:5] <- list(hatchery_object$hatchery_release[[1]],
+                                hatchery_object$hatchery_release[[1]],
+                                hatchery_object$hatchery_release[[1]],
+                                hatchery_object$hatchery_release[[1]],
+                                hatchery_object$hatchery_release[[1]])
+    
+    # phase 2 - remove 2 or 5 FR hatcheries 
+    # TODO update this logic for other runs
+    remove_2_hatcheries <- hatchery_object$hatchery_release[[1]]
+    
+    # options we could remove 
+    # coleman - battle creek, 
+    # nibus - american river, 
+    # feather - feather rivr, 
+    # mokeulmne - mokelumne river, 
+    # merced - merced river
+    
+    # Remove coleman ()
+    remove_2_hatcheries["Battle Creek" , ] <- c(0, 0, 0 , 0)
+    remove_2_hatcheries["Feather Creek" , ] <- c(0, 0, 0 , 0)
+    
+    phased_release[6:10] <- list(remove_2_hatcheries, 
+                                 remove_2_hatcheries, 
+                                 remove_2_hatcheries, 
+                                 remove_2_hatcheries, 
+                                 remove_2_hatcheries)
+    
+    # last 10 years release is at 0 
+    no_hatchery <- matrix(0, ncol = 4, nrow = 31, dimnames = list(fallRunDSM::watershed_labels, c("s", "m", "l", "xl")))
+    phased_release[11:20] <- rep(list(no_hatchery)[1], 10)
+    
+  } else if(strategy == "high_early_years") {
+    # phased hatchery object
+    for(i in 1:20) {
+      if(i %in% 1:5) {
+        phased_release["Battle Creek",,i] <- 100000000 # increase from 12 million to 100 million
+        phased_release["Feather River",,i] <- 60000000 # increase from 6 million to 60 million
+        phased_release["Merced River",,i] <- 10000000 # increase from 1 million to 10 million
+        phased_release["American River",,i] <- 40000000 # increase from 4 million to 40 million
+        phased_release["Mokelumne River",,i] <- 50000000 # increase from 5 million to 50 million
+      } else if(i %in% 6:10) {
+        # reduce each year by 50%
+        phased_release["Battle Creek",,i] <- phased_release["Battle Creek",,i-1] * .4
+        phased_release["Feather River",,i] <- phased_release["Feather River",,i-1] * .4
+        phased_release["Merced River",,i] <- phased_release["Merced River",,i-1] * .4
+        phased_release["American River",,i] <- phased_release["American River",,i-1] * .4
+        phased_release["Mokelumne River",,i] <- phased_release["Mokelumne River",,i-1] * .4
+      } else if(i %in% 11:20) {
+        phased_release["Battle Creek",,i] <- 0 # all terminal
+        phased_release["Feather River",,i] <- 0 # all terminal
+        phased_release["Merced River",,i] <- 0 # all terminal
+        phased_release["American River",,i] <- 0 # all terminal
+        phased_release["Mokelumne River",,i] <- 0 # all terminal
+      }
+    }
+  }
+  
+  return(phased_release)
   
 }
