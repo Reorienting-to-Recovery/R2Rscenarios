@@ -34,9 +34,13 @@ Layer on additional actions
 * 4: Rice Lands Salmon Rearing Practice Standard 
 * 5: Increase prey density 
 * 6: Decrease predation (scale contact points by 1/3)
-* 7: Add X acres of spawning habitat (**placeholder**)
-* 8: Add X acres of rearing habitat (**placeholder**)
-* 9: Add X acres of floodplain habitat (**placeholder**)
+* 7: Increase prey density (HRL) # TODO
+* 8: Decrease predation (HRL) # TODO
+* 27: Effects of spring run weir # TODO
+* 28: Effects of above-dam spring run habitat # TODO
+* : Add X acres of spawning habitat (**placeholder**)
+* : Add X acres of rearing habitat (**placeholder**)
+* : Add X acres of floodplain habitat (**placeholder**)
 
 #### Harvest 
 
@@ -56,6 +60,7 @@ Layer on additional actions
 * 19: Only terminal hatchery / outplanting 
 * 20: Phased hatcheries
 * 21: Release 50% in bay 
+* 26: Install weir at hatchery # TODO
 
 #### Hydrology 
 * 22: Use 2019 BiOp hydrology 

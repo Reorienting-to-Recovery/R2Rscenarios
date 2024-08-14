@@ -201,8 +201,14 @@ apply_habitat_actions <- function(scenario, params, starting_habitat, starting_h
   
   # 5 - Increase prey density 
   if (5 %in% scenario$action) {
-    updated_habitat$prey_density <- rep("max", 31)
-    updated_habitat$prey_density_delta <- rep("max", 2)
+    updated_habitat$prey_density <- matrix("max", nrow = 31, ncol = 20)
+    updated_habitat$prey_density_delta <- matrix("max", nrow = 2, ncol = 20)
+  } 
+  if(7 %in% scenario$action) {
+    updated_habitat$prey_density <- params$prey_density
+    updated_habitat$prey_density[17] <- rep("max", 20) # Sutter Bypass
+    updated_habitat$prey_density[21] <- rep("max", 20) # Colusa Basin, lower-mid sac
+    updated_habitat$prey_density[24] <- rep("max", 20) # Colusa Basin, lower sac
   } else {
     updated_habitat$prey_density <- params$prey_density
     updated_habitat$prey_density_delta <- params$prey_density_delta
