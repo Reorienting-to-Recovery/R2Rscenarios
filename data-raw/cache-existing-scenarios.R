@@ -60,7 +60,10 @@ blended_scenarios <- list("kitchen_sink" = kitchen_sink,
                           "habitat_and_hatcheries" = habitat_and_hatcheries,
                           "dry_year" = dry_year)
 
-balanced_scenarios <- list() 
+balanced_scenarios <- list("tortoise" = tortoise,
+                           "platypus" = platypus,
+                           "elephant" = elephant)
+
 scenarios <- list("blended_scenarios" = blended_scenarios, 
                   "balanced_scenarios" = balanced_scenarios)
 usethis::use_data(scenarios, overwrite = TRUE)
