@@ -232,6 +232,15 @@ apply_habitat_actions <- function(scenario, params, starting_habitat, starting_h
   }
   # TODO additional habitat modifications = adding acres and doing rice field practice
   
+  if(27 %in% scenario$action) {
+    updated_habitat$spawning_habitat = create_weir_effect_on_spawning_habitat(updated_habitat$spawning_habitat)
+  }
+  
+  if(28 %in% scenario_action) {
+    updated_habitat$inchannel_habitat_juvenile = create_spring_run_effect_on_fall_run_juvenile_habitat(habitat_object)$inchannel_habitat_juv_sr_effect
+    updated_habitat$floodplain_habitat = create_spring_run_effect_on_fall_run_juvenile_habitat(habitat_object)$floodplain_habitat_sr_effect
+  }
+  
   return(updated_habitat)
 }
 #' Apply Harvest Actions to Update Harvest Parameters
@@ -322,7 +331,8 @@ apply_hatchery_actions <- function(scenario, params, species) {
   # * 18: Baseline hatchery 
   updated_hatchery <- list(hatchery_release = params$hatchery_release, 
                            hatchery_release_proportion_bay = params$hatchery_release_proportion_bay,
-                           terminal_hatchery_logic = params$terminal_hatchery_logic) 
+                           terminal_hatchery_logic = params$terminal_hatchery_logic,
+                           proportion_hatchery = params$proportion_hatchery) 
   # * 19: Only terminal hatchery / outplanting 
   if (19 %in% scenario$action) {
   updated_hatchery$terminal_hatchery_logic <-  TRUE
@@ -331,6 +341,7 @@ apply_hatchery_actions <- function(scenario, params, species) {
   } 
   # * 20: Phased hatcheries 
   if (20 %in% scenario$action) {
+  # TODO update this with function?
   # phase 1 - current release
   phased_release <- params$hatchery_release 
   phased_release[1:5] <- list(params$hatchery_release[[1]],
@@ -371,6 +382,12 @@ apply_hatchery_actions <- function(scenario, params, species) {
   if (21 %in% scenario$action) {
     updated_hatchery$hatchery_release_proportion_bay <- .5
   } 
+  
+  # install weir at hatchery, remove 20% hatchery? 
+  # TODO confirm these methods
+  if (26 %in% scenario$action) {
+    updated_hatchery$proportion_hatchery = params$updated_hatchery * .80
+  }
   return(updated_hatchery)
 }
 
@@ -569,3 +586,61 @@ update_param <- function(final_params = final_params, updated_params = updated_p
 
 }
 
+# function for calculating effect of weir on spawning habitat
+# uses baseline sr habitat
+
+create_weir_effect_on_spawning_habitat <- function(habitat_object) {
+  total_overlap_tribs <- c("Upper Sacramento River", "Antelope Creek", "Feather River",
+                           "Mokelumne River", "Stanislaus River",
+                           "Tuolumne River")
+  # TODO calculate RM of overlap here - Emanuel?
+  partial_overlap_tribs <- c("Big Chico Creek", "Clear Creek", "Mill Creek") # Clear Creek too, but SR exceeds FR habitat on Clear
+  overlap <- array(dim = c(3, 12, 22))
+  
+  fr_spawning_habitat_with_weir <- habitat_object$spawning_habitat
+  
+  for(i in 1:22) {
+    # update tribs with total overlap to reduce fall run by 1/3
+    fr_spawning_habitat_with_weir[,,i][rownames(fr_spawning_habitat_with_weir[,,i]) %in% total_overlap_tribs, ] <- fr_spawning_habitat_with_weir[,,i][rownames(fr_spawning_habitat_with_weir[,,i]) %in% total_overlap_tribs, ] * .66
+    
+    # yuba habitat split at DPD
+    # TODO update this with rates per mile and then apply
+    fr_spawning_habitat_with_weir[,,i][rownames(fr_spawning_habitat_with_weir[,,i]) == "Yuba River", ] <- fr_spawning_habitat_with_weir[,,i][rownames(fr_spawning_habitat_with_weir[,,i]) == "Yuba River", ] / 2
+    
+    # subtract overlap from fall run
+    overlap[,,i] <- abs(fr_spawning_habitat_with_weir[,,i][rownames(fr_spawning_habitat_with_weir[,,i]) %in% partial_overlap_tribs, ] -
+                          DSMhabitat::sr_spawn$r_to_r_baseline[,,i][rownames(fr_spawning_habitat_with_weir[,,i]) %in% partial_overlap_tribs, ])
+    
+    # will need these values to be smaller, most likely
+    fr_spawning_habitat_with_weir[,,i][rownames(fr_spawning_habitat_with_weir[,,i]) %in% partial_overlap_tribs, ] <- fr_spawning_habitat_with_weir[,,i][rownames(fr_spawning_habitat_with_weir[,,i]) %in% partial_overlap_tribs, ] -
+      overlap[,,i]
+    
+  }
+  return(fr_spawning_habitat_with_weir)
+}
+
+# function for calculating effect of spring run above dam habitat on fall run
+create_spring_run_effect_on_fall_run_juvenile_habitat <- function(habitat_object) {
+  
+  # above dam habitat
+  # for now, ding in-channel and floodplain habitat
+  # TODO fry?
+  # inchannel_habitat_fry_sr_effect <- DSMhabitat::fr_fry$r_to_r_baseline
+  sr_tribs <- c("Upper Sacramento River", "Antelope Creek", "Feather River",
+                "Mokelumne River", "Stanislaus River",
+                "Tuolumne River", "Big Chico Creek", "Deer Creek", "Mill Creek",
+                "Clear Creek", "Yuba River", "Battle Creek")
+  sr_effect <- 0.9 # 10% effect
+  
+  inchannel_habitat_juv_sr_effect <- habitat_object$inchannel_habitat_juvenile
+  floodplain_habitat_sr_effect <- habitat_object$floodplain_habitat
+  
+  for(i in 1:21) {
+    inchannel_habitat_juv_sr_effect[,,i][rownames(inchannel_habitat_juv_sr_effect[,,i]) %in% sr_tribs, ] <- inchannel_habitat_juv_sr_effect[,,i][rownames(inchannel_habitat_juv_sr_effect[,,i]) %in% sr_tribs, ] * sr_effect
+    floodplain_habitat_sr_effect[,,i][rownames(floodplain_habitat_sr_effect[,,i]) %in% sr_tribs, ] <- floodplain_habitat_sr_effect[,,i][rownames(floodplain_habitat_sr_effect[,,i]) %in% sr_tribs, ] * sr_effect
+  }
+  
+  return(list("inchannel_habitat_juv_sr_effect" = inchannel_habitat_juv_sr_effect,
+              "floodplain_habitat_sr_effect" = floodplain_habitat_sr_effect))
+  
+}

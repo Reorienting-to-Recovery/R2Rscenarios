@@ -36,8 +36,8 @@ Layer on additional actions
 * 6: Decrease predation (scale contact points by 1/3)
 * 7: Increase prey density (HRL) 
 * 8: Decrease predation (HRL)
-* 27: Effects of spring run weir # TODO
-* 28: Effects of above-dam spring run habitat # TODO
+* 27: Effects of spring run weir
+* 28: Effects of above-dam spring run habitat
 * : Add X acres of spawning habitat (**placeholder**)
 * : Add X acres of rearing habitat (**placeholder**)
 * : Add X acres of floodplain habitat (**placeholder**)
@@ -60,12 +60,12 @@ Layer on additional actions
 * 19: Only terminal hatchery / outplanting 
 * 20: Phased hatcheries
 * 21: Release 50% in bay 
-* 26: Install weir at hatchery # TODO
+* 26: Install weir at hatchery
 
 #### Hydrology 
 * 22: Use 2019 BiOp hydrology 
 * 23: Use EFF hydrology 
-* 24: Use HRL hydrology 
+* 24: Use HRL hydrology # TODO
 
 For more information run `?load_scenario` in the console.
 
