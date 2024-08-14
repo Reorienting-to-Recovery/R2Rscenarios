@@ -34,8 +34,8 @@ Layer on additional actions
 * 4: Rice Lands Salmon Rearing Practice Standard 
 * 5: Increase prey density 
 * 6: Decrease predation (scale contact points by 1/3)
-* 7: Increase prey density (HRL) # TODO
-* 8: Decrease predation (HRL) # TODO
+* 7: Increase prey density (HRL) 
+* 8: Decrease predation (HRL)
 * 27: Effects of spring run weir # TODO
 * 28: Effects of above-dam spring run habitat # TODO
 * : Add X acres of spawning habitat (**placeholder**)
