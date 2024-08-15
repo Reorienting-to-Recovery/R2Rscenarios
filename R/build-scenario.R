@@ -221,9 +221,8 @@ apply_habitat_actions <- function(scenario, params, starting_habitat, starting_h
     updated_habitat$delta_prop_high_predation = params$delta_prop_high_predation * 2/3
   } 
   if(8 %in% scenario$action) {
-    # TODO any other reduction in contact points?
     updated_habitat$contact_points <- params$contact_points
-    updated_habitat$contact_points["Yuba River"] = params$contact_points["Yuba River"] - 1
+    updated_habitat$contact_points["Feather River"] = params$contact_points["Feather River"] - 1
   } else {
     updated_habitat$prop_high_predation = params$prop_high_predation 
     updated_habitat$contact_points = params$contact_points 
