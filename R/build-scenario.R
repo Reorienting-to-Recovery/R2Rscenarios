@@ -123,8 +123,6 @@ load_scenario <- function(scenario, params = fallRunDSM::r_to_r_baseline_params,
     selected_watershed <- all_param_updates[i, "watershed"] |> as.character()
     selected_year <- all_param_updates[i, "year"] |> unlist()
     selected_param <- all_param_updates[i, "param"] |> as.character()
-    print(i)
-    print(selected_param)
     scenario_param <- update_param(final_params = final_params,
                                  updated_params = updated_params, 
                                  watershed = selected_watershed, 

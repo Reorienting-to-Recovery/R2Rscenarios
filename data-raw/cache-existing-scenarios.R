@@ -29,15 +29,16 @@ dry_year <- data.frame(
 
 # Balanced scenarios -----------------------------------------------------------
 # Elephant (HRL)
-# TODO add HRL habitat, flows
-tortoise <- data.frame(
+# TODO HRL habitat (in progress)
+# TODO HRL flows (data ready, just need to add to function)
+elephant <- data.frame(
   watershed = rep("All", 6),
   action = c(7, 8, 14, 11, 20, 26),
   years = rep("All", 6)
 )
 
 # Platypus (Kitchen Sink)
-# TODO make sure eff is updated
+# TODO note that EFF logic needs to be changed in fallRunDSM
 platypus <- data.frame(
   watershed = c("All", "All", "All", "All", "All", "All", "All", "All"),
   action = c(2, 23, 5, 6, 25, 15, 11, 19),
