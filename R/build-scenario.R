@@ -49,7 +49,7 @@ load_scenario <- function(scenario, params = fallRunDSM::r_to_r_baseline_params,
   
   starting_hydrology <- case_when(22 %in% scenario$action ~ "biop_itp_2018_2019", 
                                   23 %in% scenario$action ~ "eff_sac", 
-                                  24 %in% scenario$action ~ "hrl" # todo when we get HRL 
+                                  24 %in% scenario$action ~ "LTO_12a" # todo when we get HRL 
                                   )
   
   starting_habitat <- case_when(1 %in% action_numbers & 
@@ -60,7 +60,8 @@ load_scenario <- function(scenario, params = fallRunDSM::r_to_r_baseline_params,
                                   starting_hydrology == "eff_sac" ~ "r_to_r_eff_baseline", 
                                 2 %in% action_numbers & 
                                   starting_hydrology == "eff_sac" ~ "r_to_r_tmh_eff", 
-                                3 %in% action_numbers ~ "hrl"  #todo add this when we get HRL 
+                                3 %in% action_numbers ~ "hrl"#  & 
+                                  #starting_hydrology == "LTO_12a" ~ "test"#TODO add this when we get HRL 
                                 ) 
   
   ### habitat modification -----------------------------------------------------
@@ -358,6 +359,7 @@ apply_hatchery_actions <- function(scenario, params, species) {
 apply_hydrology_actions <- function(scenario, params, starting_hydrology, species) {
   is_calsim_output_version <- ifelse(starting_hydrology %in% c("eff_sac"), FALSE, TRUE)
   updated_hydrology <- list(upper_sacramento_flows = eval(parse(text = paste0("DSMflow::upper_sacramento_flows$", starting_hydrology))), 
+                            san_joaquin_flows = ifelse(!is_calsim_output_version, eval(parse(text = paste0("DSMflow::san_joaquin_flows"))), 0), # TODO confirm - call a SJ eff object (only san joaquin flows object rn)
                             freeport_flows = eval(parse(text = paste0("DSMflow::freeport_flow$", ifelse(is_calsim_output_version, starting_hydrology, "biop_itp_2018_2019")))), # defaults to 2019 biop if starting hydro is a manipulation on a calism run 
                             vernalis_flows = eval(parse(text = paste0("DSMflow::vernalis_flow$", ifelse(is_calsim_output_version, starting_hydrology, "biop_itp_2018_2019")))),
                             stockton_flows = eval(parse(text = paste0("DSMflow::stockton_flow$", ifelse(is_calsim_output_version, starting_hydrology, "biop_itp_2018_2019")))),
@@ -416,7 +418,7 @@ expand_row <- function(watershed, years, action) {
                                                 "total_diverted", "delta_proportion_diverted", "delta_total_diverted",
                                                 "prop_pulse_flows", "delta_inflow", "cc_gates_days_closed", "cc_gates_prop_days_closed",
                                                 "proportion_flow_bypass", "gates_overtopped", "flows_oct_nov", "flows_apr_may"),
-                                    "23" = list("upper_sacramento_flows", "freeport_flows", "vernalis_flows",
+                                    "23" = list("upper_sacramento_flows", "san_joaquin_flows", "freeport_flows", "vernalis_flows",
                                                 "stockton_flows", "CVP_exports", "SWP_exports", "proportion_diverted",
                                                 "total_diverted", "delta_proportion_diverted", "delta_total_diverted",
                                                 "prop_pulse_flows", "delta_inflow", "cc_gates_days_closed", "cc_gates_prop_days_closed",

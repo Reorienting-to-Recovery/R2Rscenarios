@@ -66,7 +66,7 @@ Layer on additional actions
 #### Hydrology 
 * 22: Use 2019 BiOp hydrology 
 * 23: Use EFF hydrology 
-* 24: Use HR&L hydrology # TODO
+* 24: Use HR&L hydrology
 
 For more information run `?load_scenario` in the console.
 
