@@ -358,8 +358,14 @@ apply_hatchery_actions <- function(scenario, params, species) {
 
 apply_hydrology_actions <- function(scenario, params, starting_hydrology, species) {
   is_calsim_output_version <- ifelse(starting_hydrology %in% c("eff_sac"), FALSE, TRUE)
+  if(is_calsim_output_version) {
+    san_joaquin_flows <- eval(parse(text = paste0("DSMflow::san_joaquin_flows")))
+  } else {
+    san_joaquin_flows <- matrix(0, nrow = 12, ncol = 21)
+  }
+
   updated_hydrology <- list(upper_sacramento_flows = eval(parse(text = paste0("DSMflow::upper_sacramento_flows$", starting_hydrology))), 
-                            san_joaquin_flows = ifelse(!is_calsim_output_version, eval(parse(text = paste0("DSMflow::san_joaquin_flows"))), 0), # TODO confirm - call a SJ eff object (only san joaquin flows object rn)
+                            san_joaquin_flows = san_joaquin_flows, # TODO confirm - call a SJ eff object (only san joaquin flows object rn)
                             freeport_flows = eval(parse(text = paste0("DSMflow::freeport_flow$", ifelse(is_calsim_output_version, starting_hydrology, "biop_itp_2018_2019")))), # defaults to 2019 biop if starting hydro is a manipulation on a calism run 
                             vernalis_flows = eval(parse(text = paste0("DSMflow::vernalis_flow$", ifelse(is_calsim_output_version, starting_hydrology, "biop_itp_2018_2019")))),
                             stockton_flows = eval(parse(text = paste0("DSMflow::stockton_flow$", ifelse(is_calsim_output_version, starting_hydrology, "biop_itp_2018_2019")))),
@@ -413,7 +419,7 @@ expand_row <- function(watershed, years, action) {
                                     "19" = list("terminal_hatchery_logic", "hatchery_release"),
                                     "20" = list("hatchery_release"),
                                     "21" = list("hatchery_release_proportion_bay"),
-                                    "22" = list("upper_sacramento_flows", "freeport_flows", "vernalis_flows",
+                                    "22" = list("upper_sacramento_flows", "san_joaquin_flows", "freeport_flows", "vernalis_flows",
                                                 "stockton_flows", "CVP_exports", "SWP_exports", "proportion_diverted",
                                                 "total_diverted", "delta_proportion_diverted", "delta_total_diverted",
                                                 "prop_pulse_flows", "delta_inflow", "cc_gates_days_closed", "cc_gates_prop_days_closed",
@@ -423,7 +429,7 @@ expand_row <- function(watershed, years, action) {
                                                 "total_diverted", "delta_proportion_diverted", "delta_total_diverted",
                                                 "prop_pulse_flows", "delta_inflow", "cc_gates_days_closed", "cc_gates_prop_days_closed",
                                                 "proportion_flow_bypass", "gates_overtopped", "flows_oct_nov", "flows_apr_may"),
-                                    "24" = list("upper_sacramento_flows", "freeport_flows", "vernalis_flows",
+                                    "24" = list("upper_sacramento_flows", "san_joaquin_flows", "freeport_flows", "vernalis_flows",
                                                 "stockton_flows", "CVP_exports", "SWP_exports", "proportion_diverted",
                                                 "total_diverted", "delta_proportion_diverted", "delta_total_diverted",
                                                 "prop_pulse_flows", "delta_inflow", "cc_gates_days_closed", "cc_gates_prop_days_closed",
