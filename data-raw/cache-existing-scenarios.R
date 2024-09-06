@@ -37,7 +37,6 @@ elephant <- data.frame(
 )
 
 # Platypus (Kitchen Sink)
-# TODO note that EFF logic needs to be changed in fallRunDSM
 platypus <- data.frame(
   watershed = c("All", "All", "All", "All", "All", "All", "All", "All"),
   action = c(2, 23, 5, 6, 25, 15, 11, 19),
