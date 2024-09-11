@@ -239,6 +239,17 @@ apply_habitat_actions <- function(scenario, params, starting_habitat, starting_h
     updated_habitat$floodplain_habitat = create_spring_run_effect_on_fall_run_juvenile_habitat(updated_habitat)$floodplain_habitat_sr_effect
   }
   
+  if(29 %in% scenario$action) {
+    # raise floodplain habitat in san joaquin and tributaries to half of theoretical max habitat
+    updated_habitat$floodplain_habitat["San Joaquin River",,] <- DSMhabitat::fr_fp$r_to_r_tmh["San Joaquin River",,] * .5
+    updated_habitat$floodplain_habitat["Merced River",,] <- DSMhabitat::fr_fp$r_to_r_tmh["Merced River",,] * .5
+    updated_habitat$floodplain_habitat["Stanislaus River",,] <- DSMhabitat::fr_fp$r_to_r_tmh["Stanislaus River",,] * .5
+    updated_habitat$floodplain_habitat["Tuolumne River",,] <- DSMhabitat::fr_fp$r_to_r_tmh["Tuolumne River",,] * .5
+    updated_habitat$floodplain_habitat["Mokelumne River",,] <- DSMhabitat::fr_fp$r_to_r_tmh["Mokelumne River",,] * .5
+    updated_habitat$floodplain_habitat["Calaveras River",,] <- DSMhabitat::fr_fp$r_to_r_tmh["Calaveras River",,] * .5
+    updated_habitat$floodplain_habitat["Cosumnes River",,] <- DSMhabitat::fr_fp$r_to_r_tmh["Cosumnes River",,] * .5
+  }
+  
   return(updated_habitat)
 }
 #' Apply Harvest Actions to Update Harvest Parameters
