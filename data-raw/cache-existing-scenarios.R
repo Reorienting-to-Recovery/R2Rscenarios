@@ -46,11 +46,11 @@ platypus <- data.frame(
 # Tortoise (Dry Year)
 dry_years <- c(2, 6, 8:13, 15)
 
-# TODO add SJ floodplain only (not HRL)
 tortoise <- data.frame(
-  watershed = rep("All", 10),
-  action = c(1, 23, 5, 7, 25, 16, 17, 11, 20, 26),
-  years = I(list("All", dry_years, dry_years, dry_years, "All", "All", "All", "All", "All", "All"))
+  watershed = rep("All", 11),
+  action = c(1, 23, 5, 7, 25, 16, 17, 11, 20, 26, 29),
+  years = I(list("All", dry_years, dry_years, dry_years, "All", "All", "All", "All", "All", "All",
+                 "All"))
 )
 
 # combine -----------------------------------------------------------------
