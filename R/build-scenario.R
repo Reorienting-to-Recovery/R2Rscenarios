@@ -372,7 +372,8 @@ apply_hydrology_actions <- function(scenario, params, starting_hydrology, specie
   if(is_calsim_output_version) {
     san_joaquin_flows <- eval(parse(text = paste0("DSMflow::san_joaquin_flows")))
   } else {
-    san_joaquin_flows <- matrix(0, nrow = 12, ncol = 21)
+    san_joaquin_flows <- matrix(0, nrow = 12, ncol = 21,
+                                dimnames = list(month.abb, 1980:2000))
   }
 
   updated_hydrology <- list(upper_sacramento_flows = eval(parse(text = paste0("DSMflow::upper_sacramento_flows$", starting_hydrology))), 
@@ -498,7 +499,16 @@ update_param <- function(final_params = final_params, updated_params = updated_p
   if (any(watershed == "All") & any(year != "All") & has_year) {
     # year indexing depends on 
     if (three_d_matrix) {
-      final_params[[param_name]][,, year] <- updated_params[[param_name]][,, year]
+      if (has_delta | has_bypass) {
+        if (any(watershed %in% c("North Delta", "South Delta"))) {
+          final_params[[param_name]][,year,watershed] <- updated_params[[param_name]][,year,watershed]
+        } 
+        if (any(watershed %in% c("Sutter Bypass", "Yolo Bypass"))){
+          final_params[[param_name]][,year,watershed] <- updated_params[[param_name]][,year,watershed]
+        }
+      } else {
+        final_params[[param_name]][,, year] <- updated_params[[param_name]][,, year]
+      }
     }
     if (two_d_matrix){
       final_params[[param_name]][, year] <- updated_params[[param_name]][, year]
