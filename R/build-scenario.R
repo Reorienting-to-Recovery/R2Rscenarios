@@ -426,7 +426,7 @@ expand_row <- function(watershed, years, action) {
                                     "14" = list("intelligent_crr_harvest"), 
                                     "15" = list("intelligent_habitat_harvest"), 
                                     "16" = list("restrict_harvest_to_hatchery_ocean"), 
-                                    "17" = list("intelligent_habitat_harvest"), 
+                                    "17" = list("restrict_harvest_to_hatchery_trib"), 
                                     "18" = list(), # TODO this is just baseline so do not need to update anything? Confirm
                                     "19" = list("terminal_hatchery_logic", "hatchery_release"),
                                     "20" = list("hatchery_release"),
