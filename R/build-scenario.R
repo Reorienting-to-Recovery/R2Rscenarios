@@ -60,8 +60,8 @@ load_scenario <- function(scenario, params = fallRunDSM::r_to_r_baseline_params,
                                   starting_hydrology == "eff_sac" ~ "r_to_r_eff_baseline", 
                                 2 %in% action_numbers & 
                                   starting_hydrology == "eff_sac" ~ "r_to_r_tmh_eff", 
-                                3 %in% action_numbers ~ "hrl"#  & 
-                                  #starting_hydrology == "LTO_12a" ~ "test"#TODO add this when we get HRL 
+                                3 %in% action_numbers & 
+                                  starting_hydrology == "LTO_12a" ~ "r_to_r_hrl"
                                 ) 
   
   ### habitat modification -----------------------------------------------------
@@ -175,20 +175,21 @@ apply_habitat_actions <- function(scenario, params, starting_habitat, starting_h
   
   # get updated habitat for species and hydrology/starting habitat type 
   updated_habitat <- list(spawning_habitat = eval(parse(text = paste0("DSMhabitat::", species, "_spawn$", starting_habitat))), 
-                            inchannel_habitat_fry = eval(parse(text = paste0("DSMhabitat::", species, "_fry$", starting_habitat))), 
-                            inchannel_habitat_juvenile = eval(parse(text = paste0("DSMhabitat::", species, "_juv$", starting_habitat))),
-                            floodplain_habitat = eval(parse(text = paste0("DSMhabitat::", species, "_fp$", starting_habitat))),
-                            # ONLY VARY BY CALSIM
-                            yolo_habitat = DSMhabitat::yolo_habitat$biop_itp_2018_2019,  #TODO update once we have VA
-                            sutter_habitat = DSMhabitat::sutter_habitat$biop_itp_2018_2019,  #TODO update once we have VA
-                            delta_habitat = case_when(starting_habitat %in% c("r_to_r_tmh_eff", "r_to_r_tmh") ~ DSMhabitat::delta_habitat$r_to_r_tmh,
+                          inchannel_habitat_fry = eval(parse(text = paste0("DSMhabitat::", species, "_fry$", starting_habitat))), 
+                          inchannel_habitat_juvenile = eval(parse(text = paste0("DSMhabitat::", species, "_juv$", starting_habitat))),
+                          floodplain_habitat = eval(parse(text = paste0("DSMhabitat::", species, "_fp$", starting_habitat))),
+                          # ONLY VARY BY CALSIM
+                          yolo_habitat = DSMhabitat::yolo_habitat$biop_itp_2018_2019,  # no updates for VA
+                          sutter_habitat = case_when(starting_habitat == "r_to_r_hrl" ~ DSMhabitat::sutter_habitat$r_to_r_hrl,
+                                                     TRUE ~ DSMhabitat::sutter_habitat$biop_itp_2018_2019),
+                          delta_habitat = case_when(starting_habitat %in% c("r_to_r_tmh_eff", "r_to_r_tmh") ~ DSMhabitat::delta_habitat$r_to_r_tmh,
                                                       starting_habitat %in% c("r_to_r_eff_baseline", "r_to_r_baseline") ~ DSMhabitat::delta_habitat$r_to_r_baseline), 
-                            weeks_flooded = case_when(starting_hydrology == "biop_itp_2018_2019" ~ DSMhabitat::weeks_flooded$biop_itp_2018_2019,
+                          weeks_flooded = case_when(starting_hydrology == "biop_itp_2018_2019" ~ DSMhabitat::weeks_flooded$biop_itp_2018_2019,
                                                       starting_hydrology == "eff_sac" ~ DSMhabitat::weeks_flooded$eff_sac #TODO broken figure out fix
                                                       ), 
-                            # Note: these temp variables change with calsim updates
-                            avg_temp = DSMtemperature::stream_temperature$biop_itp_2018_2019, #TODO update once we have VA
-                            degree_days = DSMtemperature::degree_days$biop_itp_2018_2019 # TODO also add in degree days above dam logic stuff 
+                          # Note: these temp variables change with calsim updates
+                          avg_temp = DSMtemperature::stream_temperature$biop_itp_2018_2019, #TODO update once we have VA
+                          degree_days = DSMtemperature::degree_days$biop_itp_2018_2019 # TODO also add in degree days above dam logic stuff 
                           )
   
   # additional layers 
@@ -222,6 +223,8 @@ apply_habitat_actions <- function(scenario, params, starting_habitat, starting_h
   if(8 %in% scenario$action) {
     updated_habitat$contact_points <- params$contact_points
     updated_habitat$contact_points["Feather River"] = params$contact_points["Feather River"] - 1
+    # check against e-mail/spreadsheet from Lisa Elliot
+    updated_habitat$contact_points["Upper Sacramento River"] = params$contact_points["Upper Sacramento River"] - 6
   } else {
     updated_habitat$prop_high_predation = params$prop_high_predation 
     updated_habitat$contact_points = params$contact_points 
@@ -684,11 +687,16 @@ create_phased_hatchery_release <- function(hatchery_object, strategy = c("phased
     # phased hatchery object
     for(i in 1:20) {
       if(i %in% 1:5) {
-        phased_release["Battle Creek",,i] <- 100000000 # increase from 12 million to 100 million
-        phased_release["Feather River",,i] <- 60000000 # increase from 6 million to 60 million
-        phased_release["Merced River",,i] <- 10000000 # increase from 1 million to 10 million
-        phased_release["American River",,i] <- 40000000 # increase from 4 million to 40 million
-        phased_release["Mokelumne River",,i] <- 50000000 # increase from 5 million to 50 million
+        # phased_release["Battle Creek",,i] <- 100000000 # increase from 12 million to 100 million
+        # phased_release["Feather River",,i] <- 60000000 # increase from 6 million to 60 million
+        # phased_release["Merced River",,i] <- 10000000 # increase from 1 million to 10 million
+        # phased_release["American River",,i] <- 40000000 # increase from 4 million to 40 million
+        # phased_release["Mokelumne River",,i] <- 50000000 # increase from 5 million to 50 million
+        phased_release["Battle Creek",,i] <- phased_release["Battle Creek",,i] * 5
+        phased_release["Feather River",,i] <- phased_release["Feather River",,i] * 5
+        phased_release["Merced River",,i] <- phased_release["Merced River",,i] * 5
+        phased_release["American River",,i] <- phased_release["American River",,i] * 5
+        phased_release["Mokelumne River",,i] <- phased_release["Mokelumne River",,i] * 5
       } else if(i %in% 6:10) {
         # reduce each year by 50%
         phased_release["Battle Creek",,i] <- phased_release["Battle Creek",,i-1] * .4

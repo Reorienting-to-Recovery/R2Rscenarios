@@ -29,11 +29,10 @@ dry_year <- data.frame(
 
 # Balanced scenarios -----------------------------------------------------------
 # Elephant (HRL)
-# TODO HRL habitat (in progress)
 elephant <- data.frame(
-  watershed = rep("All", 7),
-  action = c(7, 8, 14, 11, 20, 24, 26),
-  years = rep("All", 7)
+  watershed = rep("All", 8),
+  action = c(3, 7, 8, 11, 14, 20, 26, 24),
+  years = rep("All", 8)
 )
 
 # Platypus (Kitchen Sink)
