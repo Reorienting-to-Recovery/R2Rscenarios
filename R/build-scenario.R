@@ -379,7 +379,7 @@ apply_hydrology_actions <- function(scenario, params, starting_hydrology, specie
                                 dimnames = list(month.abb, 1980:2000))
   } else {
     # use eff san_joaquin_flows
-    san_joaquin_flows <- eval(parse(text = paste0("DSMflow::san_joaquin_flows")))
+    san_joaquin_flows <- eval(parse(text = paste0("DSMflow::san_joaquin_flows$eff_sac")))
   }
 
   updated_hydrology <- list(upper_sacramento_flows = eval(parse(text = paste0("DSMflow::upper_sacramento_flows$", starting_hydrology))), 
