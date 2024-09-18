@@ -31,7 +31,7 @@ dry_year <- data.frame(
 # Elephant (HRL)
 elephant <- data.frame(
   watershed = rep("All", 8),
-  action = c(3, 7, 8, 11, 14, 20, 26, 24),
+  action = c(3, 7, 8, 11, 14, 20, 24, 26),
   years = rep("All", 8)
 )
 
@@ -67,3 +67,4 @@ balanced_scenarios <- list("tortoise" = tortoise,
 scenarios <- list("blended_scenarios" = blended_scenarios, 
                   "balanced_scenarios" = balanced_scenarios)
 usethis::use_data(scenarios, overwrite = TRUE)
+
