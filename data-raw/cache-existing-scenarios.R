@@ -5,7 +5,7 @@ library(R2Rscenario)
 # Blended scenarios ------------------------------------------------------------
 # kitchen sink scenario 
 kitchen_sink <- data.frame(
-  watershed = c(rep("All", 6), "Sacramento River"),
+  watershed = rep("All", 7),
   action = c(2, 5, 6, 14, 16, 19, 23),
   years =  rep("All", 7))
 
@@ -22,7 +22,7 @@ habitat_and_hatcheries <- data.frame(
 dry_years <- c(2, 6, 8:13, 15)
 
 dry_year <- data.frame(
-  watershed = c("All", "All", "All", "All", "All", "All", "Sacramento River", "All"),
+  watershed = c("All", "All", "All", "All", "All", "All", "All", "All"),
   action = c(1, 4, 5, 16, 17, 19, 23, 25),
   years =  I(list("All", c(dry_years), "All", "All", "All", "All", dry_years, "All")))
 
@@ -49,7 +49,7 @@ tortoise <- data.frame(
   watershed = rep("All", 11),
   action = c(1, 23, 5, 7, 25, 16, 17, 11, 20, 26, 29),
   years = I(list("All", c(dry_years), c(dry_years), c(dry_years), "All", "All", "All", "All", "All", "All",
-                 "All"))
+                 "All", "All"))
   # years = I(list("All", "All", "All", "All", "All", "All", "All", "All", "All", "All",
   #                "All"))
 )

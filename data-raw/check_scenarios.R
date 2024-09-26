@@ -17,6 +17,8 @@ check_scenarios <- function(names) {
 res <- map(names(fallRunDSM::r_to_r_baseline_params), check_scenarios) 
 which(res > 0)
 
+names(fallRunDSM::r_to_r_baseline_params)[which(res>0)]
+
 # ones that are different  
 #  88 spawning habitat - includes decay
 #  89 inchannel habitat fry - includes decay

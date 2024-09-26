@@ -49,7 +49,7 @@ load_scenario <- function(scenario, params = fallRunDSM::r_to_r_baseline_params,
   
   starting_hydrology <- case_when(22 %in% scenario$action ~ "biop_itp_2018_2019", 
                                   23 %in% scenario$action ~ "eff_sac", 
-                                  24 %in% scenario$action ~ "LTO_12a" # todo when we get HRL 
+                                  24 %in% scenario$action ~ "LTO_12a"  
                                   )
   
   starting_habitat <- case_when(1 %in% action_numbers & 
