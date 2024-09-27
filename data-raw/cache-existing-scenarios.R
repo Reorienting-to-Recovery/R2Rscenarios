@@ -5,9 +5,9 @@ library(R2Rscenario)
 # Blended scenarios ------------------------------------------------------------
 # kitchen sink scenario 
 kitchen_sink <- data.frame(
-  watershed = rep("All", 7),
-  action = c(2, 5, 6, 14, 16, 19, 23),
-  years =  rep("All", 7))
+  watershed = rep("All", 8),
+  action = c(2, 5, 6, 14, 15, 16, 19, 23),
+  years =  rep("All", 8))
 
 # Habitat and Hatcheries 
 habitat_and_hatcheries <- data.frame(
