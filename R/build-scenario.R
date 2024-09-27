@@ -190,7 +190,9 @@ apply_habitat_actions <- function(scenario, params, starting_habitat, starting_h
                                                       starting_hydrology == "LTO_12a" ~ DSMhabitat::weeks_flooded$lto_12a), 
                           # Note: these temp variables change with calsim updates
                           avg_temp = DSMtemperature::stream_temperature$biop_itp_2018_2019, #TODO update once we have VA
-                          degree_days = DSMtemperature::degree_days$biop_itp_2018_2019 # TODO also add in degree days above dam logic stuff 
+                          degree_days = DSMtemperature::degree_days$biop_itp_2018_2019, # TODO also add in degree days above dam logic stuff 
+                          prey_density <- matrix("hi", nrow = 31, ncol = 20),
+                          prey_density_delta <- matrix("hi", nrow = 2, ncol = 20)
                           )
   
   # additional layers 
@@ -202,24 +204,20 @@ apply_habitat_actions <- function(scenario, params, starting_habitat, starting_h
   
   # 5 - Increase prey density 
   if (5 %in% scenario$action) {
-    updated_habitat$prey_density <- matrix("max", nrow = 31, ncol = 20)
-    updated_habitat$prey_density_delta <- matrix("max", nrow = 2, ncol = 20)
+    updated_habitat$prey_density <- matrix("hi", nrow = 31, ncol = 20)
+    updated_habitat$prey_density_delta <- matrix("hi", nrow = 2, ncol = 20)
+  } else if(7 %in% scenario$action) {
+    updated_habitat$prey_density <- params$prey_density
+    updated_habitat$prey_density[17,] <- rep("hi", 20) # Sutter Bypass
+    updated_habitat$prey_density[21,] <- rep("hi", 20) # Colusa Basin, lower-mid sac
+    updated_habitat$prey_density[24,] <- rep("hi", 20) # Colusa Basin, lower sac
   } 
-  if(7 %in% scenario$action) {
-    updated_habitat$prey_density <- params$prey_density
-    updated_habitat$prey_density[17,] <- rep("max", 20) # Sutter Bypass
-    updated_habitat$prey_density[21,] <- rep("max", 20) # Colusa Basin, lower-mid sac
-    updated_habitat$prey_density[24,] <- rep("max", 20) # Colusa Basin, lower sac
-  } else {
-    updated_habitat$prey_density <- params$prey_density
-    updated_habitat$prey_density_delta <- params$prey_density_delta
-  }
   # 6 - Decrease predation (scale contact points by 1/3)
   if (6 %in% scenario$action) {
-    updated_habitat$prop_high_predation = params$prop_high_predation * 2/3
-    updated_habitat$contact_points= params$contact_points * 2/3
-    updated_habitat$delta_contact_points = params$delta_contact_points * 2/3
-    updated_habitat$delta_prop_high_predation = params$delta_prop_high_predation * 2/3
+    updated_habitat$prop_high_predation = params$prop_high_predation * 1/3
+    updated_habitat$contact_points= params$contact_points * 1/3
+    updated_habitat$delta_contact_points = params$delta_contact_points * 1/3
+    updated_habitat$delta_prop_high_predation = params$delta_prop_high_predation * 1/3
   } 
   if(8 %in% scenario$action) {
     updated_habitat$contact_points <- params$contact_points
