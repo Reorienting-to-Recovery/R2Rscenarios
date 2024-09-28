@@ -223,7 +223,9 @@ apply_habitat_actions <- function(scenario, params, starting_habitat, starting_h
     updated_habitat$contact_points <- params$contact_points
     updated_habitat$contact_points["Feather River"] = params$contact_points["Feather River"] - 1
     # check against e-mail/spreadsheet from Lisa Elliot
-    updated_habitat$contact_points["Upper Sacramento River"] = params$contact_points["Upper Sacramento River"] - 6
+    updated_habitat$contact_points["Upper Sacramento River"] = params$contact_points["Upper Sacramento River"] - 9
+    updated_habitat$contact_points["Antelope Creek"] = params$contact_points["Antelope Creek"] - 1
+    updated_habitat$contact_points["Butte Creek"] = params$contact_points["Butte Creek"] - 1
   } else {
     updated_habitat$prop_high_predation = params$prop_high_predation 
     updated_habitat$contact_points = params$contact_points 
