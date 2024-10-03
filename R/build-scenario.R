@@ -452,6 +452,7 @@ expand_row <- function(watershed, years, action) {
                                                 "total_diverted", "delta_proportion_diverted", "delta_total_diverted",
                                                 "prop_pulse_flows", "delta_inflow", "cc_gates_days_closed", "cc_gates_prop_days_closed",
                                                 "proportion_flow_bypass", "gates_overtopped", "flows_oct_nov", "flows_apr_may"),
+                                    "25" = list("no_cohort_harvest_years"),
                                     "26" = list("proportion_hatchery"),
                                     "27" = list("spawning_habitat"),
                                     "28" = list("inchannel_habitat_juvenile", "floodplain_habitat"))
