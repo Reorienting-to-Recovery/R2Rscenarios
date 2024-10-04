@@ -49,8 +49,8 @@ load_scenario <- function(scenario, params = fallRunDSM::r_to_r_baseline_params,
   
   starting_hydrology <- case_when(22 %in% scenario$action ~ "biop_itp_2018_2019", 
                                   23 %in% scenario$action ~ "eff_sac", 
-                                  24 %in% scenario$action ~ "LTO_12a"  
-                                  )
+                                  24 %in% scenario$action ~ "LTO_12a",  
+                                  31 %in% scenario$action ~ "LTO_12a_eff_dy")
   
   starting_habitat <- case_when(1 %in% action_numbers & 
                                   starting_hydrology == "biop_itp_2018_2019" ~ "r_to_r_baseline",
@@ -61,8 +61,9 @@ load_scenario <- function(scenario, params = fallRunDSM::r_to_r_baseline_params,
                                 2 %in% action_numbers & 
                                   starting_hydrology == "eff_sac" ~ "r_to_r_tmh_eff", 
                                 3 %in% action_numbers & 
-                                  starting_hydrology == "LTO_12a" ~ "r_to_r_hrl"
-                                ) 
+                                  starting_hydrology == "LTO_12a" ~ "r_to_r_hrl",
+                                30 %in% action_numbers & 
+                                  starting_hydrology == "LTO_12a_eff_dy" ~ "r_to_r_hrl_eff") 
   
   ### habitat modification -----------------------------------------------------
   updated_habitat <- apply_habitat_actions(scenario = scenario, 
@@ -191,8 +192,8 @@ apply_habitat_actions <- function(scenario, params, starting_habitat, starting_h
                           # Note: these temp variables change with calsim updates
                           avg_temp = DSMtemperature::stream_temperature$biop_itp_2018_2019, #TODO update once we have VA
                           degree_days = DSMtemperature::degree_days$biop_itp_2018_2019, # TODO also add in degree days above dam logic stuff 
-                          prey_density <- matrix("hi", nrow = 31, ncol = 20),
-                          prey_density_delta <- matrix("hi", nrow = 2, ncol = 20)
+                          prey_density <- params$prey_density, # matrix("hi", nrow = 31, ncol = 20),
+                          prey_density_delta <- params$prey_density_delta #matrix("hi", nrow = 2, ncol = 20)
                           )
   
   # additional layers 
@@ -455,7 +456,17 @@ expand_row <- function(watershed, years, action) {
                                     "25" = list("no_cohort_harvest_years"),
                                     "26" = list("proportion_hatchery"),
                                     "27" = list("spawning_habitat"),
-                                    "28" = list("inchannel_habitat_juvenile", "floodplain_habitat"))
+                                    "28" = list("inchannel_habitat_juvenile", "floodplain_habitat"),
+                                    "29" = list("floodplain_habitat"),
+                                    "30" = list("spawning_habitat", "inchannel_habitat_fry",
+                                                "inchannel_habitat_juvenile", "floodplain_habitat",
+                                                "yolo_habitat", "sutter_habitat", "delta_habitat",
+                                                "weeks_flooded", "avg_temp","degree_days"),
+                                    "31" = list("upper_sacramento_flows", "san_joaquin_flows", "freeport_flows", "vernalis_flows",
+                                                "stockton_flows", "CVP_exports", "SWP_exports", "proportion_diverted",
+                                                "total_diverted", "delta_proportion_diverted", "delta_total_diverted",
+                                                "prop_pulse_flows", "delta_inflow", "cc_gates_days_closed", "cc_gates_prop_days_closed",
+                                                "proportion_flow_bypass", "gates_overtopped", "flows_oct_nov", "flows_apr_may"))
   
   relevent_action_params <- params_affected_by_action[[as.character(action)]] |> unlist()
   
