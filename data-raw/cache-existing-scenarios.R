@@ -2,6 +2,15 @@ library(purrr)
 library(dplyr)
 library(readxl)
 library(R2Rscenario)
+
+
+# Baseline ----------------------------------------------------------------
+baseline <- data.frame(
+  watershed = rep("All", 4),
+  action = c(1, 22, 10, 18),
+  years =  rep("All", 4)
+)
+
 # Blended scenarios ------------------------------------------------------------
 # kitchen sink scenario 
 kitchen_sink <- data.frame(
@@ -36,6 +45,12 @@ elephant <- data.frame(
   years = rep("All", 8)
 )
 
+elephant_plus <- data.frame(
+  watershed = rep("All", 8),
+  action = c(30, 7, 8, 11, 14, 20, 31, 26),
+  years = rep("All", 8)
+)
+
 # Platypus (Kitchen Sink)
 platypus <- data.frame(
   watershed = c("All", "All", "All", "All", "All", "All", "All", "All"),
@@ -63,9 +78,12 @@ blended_scenarios <- list("kitchen_sink" = kitchen_sink,
 
 balanced_scenarios <- list("tortoise" = tortoise,
                            "platypus" = platypus,
-                           "elephant" = elephant)
+                           "elephant" = elephant,
+                           "elephant_plus" = elephant_plus)
+baseline_scenarios <- list("baseline" = baseline)
 
-scenarios <- list("blended_scenarios" = blended_scenarios, 
+scenarios <- list("baseline_scenarios" = baseline_scenarios, 
+                  "blended_scenarios" = blended_scenarios, 
                   "balanced_scenarios" = balanced_scenarios)
 usethis::use_data(scenarios, overwrite = TRUE)
 
