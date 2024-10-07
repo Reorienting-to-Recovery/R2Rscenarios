@@ -55,9 +55,9 @@ elephant <- data.frame(
 # this elephant plus scales up habitat by X%, adds san joaquin floodplain, and 
 # uses IHH harvest
 elephant_plus <- data.frame(
-  watershed = rep("All", 10),
-  action = c(3, 7, 8, 32, 29, 11, 15, 20, 24, 26),
-  years = rep("All", 10)
+  watershed = rep("All", 9),
+  action = c(3, 7, 8, 32, 11, 15, 20, 24, 26),
+  years = rep("All", 9)
 )
 
 # Platypus (Kitchen Sink)
