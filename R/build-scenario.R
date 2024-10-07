@@ -261,7 +261,7 @@ apply_habitat_actions <- function(scenario, params, starting_habitat, starting_h
     updated_habitat$spawning_habitat = updated_habitat$spawning_habitat * scaling_factor 
     #updated_habitat$inchannel_habitat_fry = updated_habitat$inchannel_habitat_fry * scaling_factor 
     #updated_habitat$inchannel_habitat_juvenile = updated_habitat$inchannel_habitat_juvenile * scaling_factor
-    #updated_habitat$floodplain_habitat = updated_habitat$floodplain_habitat * scaling_factor
+    updated_habitat$floodplain_habitat = updated_habitat$floodplain_habitat * scaling_factor
     updated_habitat$yolo_habitat = updated_habitat$yolo_habitat * scaling_factor
     updated_habitat$sutter_habitat = updated_habitat$sutter_habitat * scaling_factor
     updated_habitat$delta_habitat = updated_habitat$delta_habitat * scaling_factor
