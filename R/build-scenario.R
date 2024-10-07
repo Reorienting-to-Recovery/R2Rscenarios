@@ -256,6 +256,18 @@ apply_habitat_actions <- function(scenario, params, starting_habitat, starting_h
     updated_habitat$floodplain_habitat["Cosumnes River",,] <- DSMhabitat::fr_fp$r_to_r_tmh["Cosumnes River",,] * .5
   }
   
+  if(32 %in% scenario$action) {
+    scaling_factor <- 25
+    HRL_tribs <- c("American River", "Mokelumne River", "Feather River", "Tuolumne River", "Yuba River")
+    updated_habitat$spawning_habitat = updated_habitat$spawning_habitat * scaling_factor 
+    updated_habitat$inchannel_habitat_fry = updated_habitat$inchannel_habitat_fry * scaling_factor 
+    updated_habitat$inchannel_habitat_juvenile = updated_habitat$inchannel_habitat_juvenile * scaling_factor
+    updated_habitat$floodplain_habitat = updated_habitat$floodplain_habitat * scaling_factor
+    updated_habitat$yolo_habitat = updated_habitat$yolo_habitat * scaling_factor
+    updated_habitat$sutter_habitat = updated_habitat$sutter_habitat * scaling_factor
+    updated_habitat$delta_habitat = updated_habitat$delta_habitat * scaling_factor
+  }
+  
   return(updated_habitat)
 }
 #' Apply Harvest Actions to Update Harvest Parameters
@@ -467,7 +479,11 @@ expand_row <- function(watershed, years, action) {
                                                 "stockton_flows", "CVP_exports", "SWP_exports", "proportion_diverted",
                                                 "total_diverted", "delta_proportion_diverted", "delta_total_diverted",
                                                 "prop_pulse_flows", "delta_inflow", "cc_gates_days_closed", "cc_gates_prop_days_closed",
-                                                "proportion_flow_bypass", "gates_overtopped", "flows_oct_nov", "flows_apr_may"))
+                                                "proportion_flow_bypass", "gates_overtopped", "flows_oct_nov", "flows_apr_may"),
+                                    "32" = list("spawning_habitat", "inchannel_habitat_fry",
+                                                "inchannel_habitat_juvenile", "floodplain_habitat",
+                                                "yolo_habitat", "sutter_habitat", "delta_habitat")
+  )
   
   relevent_action_params <- params_affected_by_action[[as.character(action)]] |> unlist()
   
