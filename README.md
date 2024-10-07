@@ -27,7 +27,8 @@ First define hydrology - and associated habitat
 
 * 1: Baseline Habitat 
 * 2: Theoretical Max Habitat 
-* 3: HRL habitat 
+* 3: HRL habitat
+* 30: HRL + EFF (dry years) habitat
 
 Layer on additional actions 
 
@@ -39,6 +40,7 @@ Layer on additional actions
 * 27: Effects of spring run weir
 * 28: Effects of above-dam spring run habitat
 * 29: Add San Joaquin floodplain habitat
+* 32: Scale up habitat by 50%
 * : Add X acres of spawning habitat (**placeholder**)
 * : Add X acres of rearing habitat (**placeholder**)
 * : Add X acres of floodplain habitat (**placeholder**)
@@ -67,6 +69,7 @@ Layer on additional actions
 * 22: Use 2019 BiOp hydrology 
 * 23: Use EFF hydrology 
 * 24: Use HR&L hydrology
+* 31: Use HR&L + EFF (dry years) hydrology
 
 For more information run `?load_scenario` in the console.
 

@@ -45,10 +45,19 @@ elephant <- data.frame(
   years = rep("All", 8)
 )
 
+# this elephant plus uses EFF spliced in, lets not use that for now
+# elephant_plus <- data.frame(
+#   watershed = rep("All", 8),
+#   action = c(30, 7, 8, 11, 14, 20, 31, 26),
+#   years = rep("All", 8)
+# )
+
+# this elephant plus scales up habitat by X%, adds san joaquin floodplain, and 
+# uses IHH harvest
 elephant_plus <- data.frame(
-  watershed = rep("All", 8),
-  action = c(30, 7, 8, 11, 14, 20, 31, 26),
-  years = rep("All", 8)
+  watershed = rep("All", 10),
+  action = c(3, 7, 8, 32, 29, 11, 15, 20, 24, 26),
+  years = rep("All", 10)
 )
 
 # Platypus (Kitchen Sink)
