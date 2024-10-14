@@ -38,10 +38,10 @@ dry_year <- data.frame(
 
 
 # Balanced scenarios -----------------------------------------------------------
-# Elephant (HRL)
+# Elephant (HRL) - this now includes intelligent habitat harvest (15)
 elephant <- data.frame(
   watershed = rep("All", 8),
-  action = c(3, 7, 8, 11, 14, 20, 24, 26),
+  action = c(3, 7, 8, 11, 15, 20, 24, 26),
   years = rep("All", 8)
 )
 
@@ -59,13 +59,6 @@ elephant <- data.frame(
 #   action = c(3, 7, 8, 32, 11, 15, 20, 24, 26),
 #   years = rep("All", 9)
 # )
-
-# this elephant plus is just elephant, with IHH
-elephant_plus <- data.frame(
-  watershed = rep("All", 8),
-  action = c(3, 7, 8, 11, 15, 20, 24, 26),
-  years = rep("All", 8)
-)
 
 # Platypus (Kitchen Sink)
 platypus <- data.frame(
@@ -92,8 +85,7 @@ blended_scenarios <- list("kitchen_sink" = kitchen_sink,
 
 balanced_scenarios <- list("tortoise" = tortoise,
                            "platypus" = platypus,
-                           "elephant" = elephant,
-                           "elephant_plus" = elephant_plus)
+                           "elephant" = elephant)
 baseline_scenarios <- list("baseline" = baseline)
 
 scenarios <- list("baseline_scenarios" = baseline_scenarios, 
