@@ -79,7 +79,7 @@ dry_years <- c(2, 6, 8:13, 15)
 
 tortoise <- data.frame(
   watershed = rep("All", 11),
-  action = c(1, 23, 5, 7, 25, 16, 17, 11, 20, 26, 29),
+  action = c(1, 23, 5, 7, 25, 16, 17, 11, 20, 26, 29), # TODO add predation reduction 6, add 4 and make sure 4 and 26 are dry years
   years = I(list("All", c(dry_years), c(dry_years), c(dry_years), "All", "All", "All", "All", "All", "All",
                  "All"))
 )

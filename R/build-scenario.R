@@ -722,11 +722,11 @@ create_phased_hatchery_release <- function(hatchery_object, strategy = c("phased
         # phased_release["Merced River",,i] <- 10000000 # increase from 1 million to 10 million
         # phased_release["American River",,i] <- 40000000 # increase from 4 million to 40 million
         # phased_release["Mokelumne River",,i] <- 50000000 # increase from 5 million to 50 million
-        phased_release["Battle Creek",,i] <- phased_release["Battle Creek",,i] * 5
-        phased_release["Feather River",,i] <- phased_release["Feather River",,i] * 5
-        phased_release["Merced River",,i] <- phased_release["Merced River",,i] * 5
-        phased_release["American River",,i] <- phased_release["American River",,i] * 5
-        phased_release["Mokelumne River",,i] <- phased_release["Mokelumne River",,i] * 5
+        phased_release["Battle Creek",,i] <- phased_release["Battle Creek",,i] * 5 # up to 60 million
+        phased_release["Feather River",,i] <- phased_release["Feather River",,i] * 5 # up to 30 million
+        phased_release["Merced River",,i] <- phased_release["Merced River",,i] * 5 # up to 5 million
+        phased_release["American River",,i] <- phased_release["American River",,i] * 5 # up to 20 million
+        phased_release["Mokelumne River",,i] <- phased_release["Mokelumne River",,i] * 5 # up to 25 million
       } else if(i %in% 6:10) {
         # reduce each year by 50%
         phased_release["Battle Creek",,i] <- phased_release["Battle Creek",,i-1] * .4
