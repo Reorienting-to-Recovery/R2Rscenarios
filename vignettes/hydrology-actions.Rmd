@@ -1,0 +1,19 @@
+---
+title: "Hydrology actions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Hydrology actions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(R2Rscenario)
+```

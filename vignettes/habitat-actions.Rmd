@@ -1,0 +1,19 @@
+---
+title: "Habitat actions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Habitat actions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(R2Rscenario)
+```

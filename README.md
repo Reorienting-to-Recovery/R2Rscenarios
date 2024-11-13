@@ -41,9 +41,6 @@ Layer on additional actions
 * 28: Effects of above-dam spring run habitat
 * 29: Add San Joaquin floodplain habitat
 * 32: Scale up habitat by 50%
-* : Add X acres of spawning habitat (**placeholder**)
-* : Add X acres of rearing habitat (**placeholder**)
-* : Add X acres of floodplain habitat (**placeholder**)
 
 #### Harvest 
 
@@ -63,7 +60,7 @@ Layer on additional actions
 * 19: Only terminal hatchery / outplanting 
 * 20: Phased hatcheries
 * 21: Release 50% in bay 
-* 26: Install weir at hatchery # TODO is this used every year
+* 26: Install weir at hatchery
 
 #### Hydrology 
 * 22: Use 2019 BiOp hydrology 
