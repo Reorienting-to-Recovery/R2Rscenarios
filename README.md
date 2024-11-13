@@ -73,17 +73,21 @@ For more information run `?load_scenario` in the console.
 The following example builds the kitchen sink scenario:
 
 Habitat
+
 * 2: Theoretical Max Habitat in all locations
 * 5: Increase prey density in all locations 
 
 Harvest
+
 * 14: Intelligent CRR harvest
 * 16: Harvest only hatchery fish (ocean)
 
 Hatchery 
+
 * 19: Only terminal hatchery / outplanting 
 
 Hydrology
+
 * 23: Use EFF hydrology on the Sacramento River
 
 ```r
