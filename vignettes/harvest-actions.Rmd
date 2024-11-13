@@ -1,0 +1,76 @@
+---
+title: "Harvest actions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Harvest actions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, echo = FALSE, message = FALSE, warning = FALSE}
+library(R2Rscenario)
+library(fallRunDSM)
+library(DSMhabitat)
+library(DSMflow)
+```
+
+This document provides additional information about how harvest actions are implemented in the fall run model for Reorienting to Recovery (R2R). For more more information about the model itself, including the codebase, please see [our documentation](https://reorienting-to-recovery.github.io/fallRunDSM/).
+
+## Harvest actions
+
+There are 9 harvest actions that can be implemented in the model. Each has an associated number that is used to build a scenario in the R2Rscenarios package.
+
+* `10`: Baseline harvest 
+* `11`: Tribal harvest only 
+* `12`: In river harvest only 
+* `13`: Ocean harvest only 
+* `14`: Intelligent CRR harvest
+* `15`: Intelligent habitat harvest 
+* `16`: Harvest only hatchery fish (ocean)
+* `17`: Harvest only hatchery fish (tributary)
+* `25`: No harvest of dry year cohort 
+
+### 10: Baseline harvest
+
+If `10` is selected, baseline harvest logic is used which applies in-river and ocean harvest according to rates detailed in the  [2022 Preseason Report PFMC](https://www.pcouncil.org/documents/2022/03/2022-preseason-report-i.pdf/).
+
+### 11: Tribal harvest only
+
+The model allows for a binary variable as an argument that states whether or not tribal harvest is to be preserved. If `11` is selected, this argument is set to `TRUE` and for all tributaries, `1%` of in-river, natural fish harvest is taken. this value is a working number and will be updated iteratively based on conversations.
+
+### 12: In-river harvest only
+
+If `12` is selected, there is no ocean harvest applied at any point in the model, and in-river harvest is set to baseline numbers (see `10`).
+
+### 13: Ocean harvest only
+
+If `13` is selected, there is no in-river harvest applied at any point in the model, and ocean harvest is set to baseline numbers (see `10`).
+
+### 14: Intelligent CRR harvest
+
+The model allows for a binary variable as an argument that states whether or not to implement the intelligent cohort replacement rate (CRR) harvest strategy. If `14` is selected, this argument is set to `TRUE` and the model will implement harvest logic that harvests adults only up to the number of spawners required to maintain a CRR of either `1` (default) or another scalar (user specified).
+
+### 15: Intelligent habitat harvest
+
+The model allows for a binary variable as an argument that states whether or not to implement the intelligent habitat harvest strategy. If `15` is selected, this argument is set to `TRUE` and the model will implement harvest logic that preserves the number of spawners that fill all available spawning habitat, and allows for harvest of all spawners above that population size.
+
+### 16: Harvest only hatchery fish (ocean)
+
+If `16` is selected, the model will allow commercial (ocean) harvest of hatchery fish but not natural fish.
+
+### 17: Harvest only hatchery fish (tributary)
+
+If `17` is selected, the model will allow in-river harvest of hatchery fish but not natural fish.
+
+### 25: No harvest of dry year cohorts
+
+If `25` is selected, the model will prevent in-river and ocean harvest of "dry year cohorts", or fish produced during the model dry years (`1982`, `1986`, `1988-1993`, and `1995`). Harvest can still occur in all years, but not of those fish. 
+
+

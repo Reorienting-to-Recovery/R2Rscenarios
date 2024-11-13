@@ -1,0 +1,125 @@
+---
+title: "Hatchery actions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Hatchery actions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.width = 6, fig.height =4)
+```
+
+```{r setup, echo = FALSE, message = FALSE, warning = FALSE}
+library(R2Rscenario)
+library(fallRunDSM)
+library(DSMhabitat)
+library(DSMflow)
+
+colors_small <-  c("#9A8822", "#F5CDB4", "#F8AFA8", "#FDDDA0", "#74A089", #Royal 2
+                            "#899DA4", "#C93312", "#DC863B" # royal 1 (- 3)
+)
+
+scenario_six_colors <- c("#02401B", "#9A8822", "#798E87", "#5B1A18","#972D15", "#DC863B", "#AA9486")
+```
+
+This document provides additional information about how hatchery actions are implemented in the fall run model for Reorienting to Recovery (R2R). For more more information about the model itself, including the codebase, please see [our documentation](https://reorienting-to-recovery.github.io/fallRunDSM/).
+
+## Hatchery actions
+
+There are 5 harvest actions that can be implemented in the model. Each has an associated number that is used to build a scenario in the R2Rscenarios package.
+
+* `18`: Baseline hatchery 
+* `19`: Only terminal hatchery / outplanting 
+* `20`: Phased hatcheries
+* `21`: Release 50% in bay 
+* `26`: Install weir at hatchery
+
+### 18: Baseline hatchery
+
+If `18` is selected, baseline hatchery logic is used. This is a year-structured data object that shows hatchery releases by year, and numbers are based on current production numbers [California Hatchery Scientific Review Group, 2012](https://swfsc-publications.fisheries.noaa.gov/publications/CR/2012/2012California.pdf). 
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+hatchery_watersheds <- c("Merced River", "Mokelumne River",
+                         "American River", "Feather River",
+                         "Battle Creek")
+fallRunDSM::r_to_r_baseline_params$hatchery_release |> 
+  as.data.frame.table() |> 
+  rename(watershed = Var1, 
+         size_class = Var2,
+         model_year = Var3,
+         release = Freq) |> 
+  filter(size_class == "l",
+         watershed %in% hatchery_watersheds) |> # no other size classes released
+  mutate(release = release / 100000) |> 
+  ggplot(aes(x = model_year, y = release, color = watershed)) +
+  geom_line(aes(group = watershed)) +
+  scale_color_manual(values = scenario_six_colors) +
+  theme_bw() +
+  labs(x = "Model year",
+       y = "Hatchery release (in 100,000s)",
+       title = "Hatchery releases in model years (baseline)")
+  
+```
+
+### 19: Only terminal hatchery / outplanting
+
+If `19` is selected, there are no in-river hatchery releases in the model and instead "terminal" hatcheries are utilized, which release hatchery fish at the entry to the ocean to support commercial harvest.
+
+### 20: Phased hatchery
+
+If `20` is selected, in-river hatchery releases are scaled up by `500%` in the first `5` years, and then scaled down by `60%` from years `6:10`, and then set to `0` for the last `10` years of the model as terminal hatcheries are utilized instead. This is a year-structured data object that shows hatchery releases by year, and baseline numbers are based on current production numbers [California Hatchery Scientific Review Group, 2012](https://swfsc-publications.fisheries.noaa.gov/publications/CR/2012/2012California.pdf) before being scaled up.
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+source(here::here("R", "build-scenario.R"))
+hatchery_watersheds <- c("Merced River", "Mokelumne River",
+                         "American River", "Feather River",
+                         "Battle Creek")
+create_phased_hatchery_release(fallRunDSM::r_to_r_baseline_params, 
+                               "high_early_years") |> 
+  as.data.frame.table() |> 
+  rename(watershed = Var1, 
+         size_class = Var2,
+         model_year = Var3,
+         release = Freq) |> 
+  filter(size_class == "l",
+         watershed %in% hatchery_watersheds) |> # no other size classes released
+  mutate(release = release / 100000) |> 
+  ggplot(aes(x = model_year, y = release, color = watershed)) +
+  geom_line(aes(group = watershed)) +
+  scale_color_manual(values = scenario_six_colors) +
+  theme_bw() +
+  labs(x = "Model year",
+       y = "Hatchery release (in 100,000s)",
+       title = "Hatchery releases in model years (phased)")
+```
+
+### 21: Release 50% in bay 
+
+If `21` is selected, the parameter `hatchery_release_proportion_bay` is set to `0.5`, which tells you which proportion of the releases are in-river vs. released at Chipps. 
+
+### 26: Install weir at hatchery
+
+If `26` is selected, the model will scale down `proportion_hatchery` for each watershed by `20%` to approximate the effect of installing a weir at the hatchery.
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+tibble("watershed" = fallRunDSM::watershed_labels,
+       "original" = fallRunDSM::r_to_r_baseline_params$proportion_hatchery) |> 
+  mutate(scaled = original * 0.80) |> 
+  pivot_longer(original:scaled,
+               names_to = "version",
+               values_to = "proportion_hatchery") |>
+  ggplot(aes(x = watershed, y = proportion_hatchery, color = version)) +
+  geom_point(size = 2) +
+  scale_color_manual(values = scenario_six_colors) +
+  theme_bw() +
+  labs(x = "Watershed",
+       y = "Proportion hatchery",
+       title = "Proportion hatchery - scaled vs. original") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```

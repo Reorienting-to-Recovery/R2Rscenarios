@@ -28,22 +28,19 @@ First define hydrology - and associated habitat
 * 1: Baseline Habitat 
 * 2: Theoretical Max Habitat 
 * 3: HRL habitat
-* 30: HRL + EFF (dry years) habitat
+* 30: HRL + FF (dry years) habitat
 
 Layer on additional actions 
 
 * 4: Rice Lands Salmon Rearing Practice Standard 
 * 5: Increase prey density 
 * 6: Decrease predation (scale contact points by 1/3)
-* 7: 20,000 acres of fish food production prey density (HRL) # TODO incorporate into 5
+* 7: 20,000 acres of fish food production prey density (HRL)
 * 8: Remove predation contact points (HRL)
 * 27: Effects of spring run weir
 * 28: Effects of above-dam spring run habitat
 * 29: Add San Joaquin floodplain habitat
-* 32: Scale up habitat by 50%
-* : Add X acres of spawning habitat (**placeholder**)
-* : Add X acres of rearing habitat (**placeholder**)
-* : Add X acres of floodplain habitat (**placeholder**)
+* 32: Scale up habitat by X%
 
 #### Harvest 
 
@@ -63,30 +60,34 @@ Layer on additional actions
 * 19: Only terminal hatchery / outplanting 
 * 20: Phased hatcheries
 * 21: Release 50% in bay 
-* 26: Install weir at hatchery # TODO is this used every year
+* 26: Install weir at hatchery
 
 #### Hydrology 
 * 22: Use 2019 BiOp hydrology 
 * 23: Use EFF hydrology 
 * 24: Use HR&L hydrology
-* 31: Use HR&L + EFF (dry years) hydrology
+* 31: Use HR&L + FF (dry years) hydrology
 
 For more information run `?load_scenario` in the console.
 
 The following example builds the kitchen sink scenario:
 
 Habitat
+
 * 2: Theoretical Max Habitat in all locations
 * 5: Increase prey density in all locations 
 
 Harvest
+
 * 14: Intelligent CRR harvest
 * 16: Harvest only hatchery fish (ocean)
 
 Hatchery 
+
 * 19: Only terminal hatchery / outplanting 
 
 Hydrology
+
 * 23: Use EFF hydrology on the Sacramento River
 
 ```r

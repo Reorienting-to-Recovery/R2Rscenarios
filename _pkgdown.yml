@@ -13,17 +13,18 @@ reference:
 - title: Scenario Functions
   desc: Functions to apply scenarios to the R2R Salmon Population Model
   contents:
-  - get_action_matrices
+  - apply_habitat_actions
+  - apply_harvest_actions
   - load_scenario
 
 - title: Scenario Data
   desc: Scenario Data used in CVPIA Salmon Population Models
   contents:
-  - max_rear_area
-  - max_spawn_area
+  - decay_rate
+  - max_habitat
+  - param_type_lookup
   - regulated_watersheds
-  - rear_decay_rate
-  - spawn_decay_rate
+  - spawning_decay_multiplier
   - species
   - watershed_groups
   - watershed_labels
@@ -35,12 +36,19 @@ navbar:
     href: reference/index.html
   - text: 'News'
     href: news/index.html
-  right:
-  - icon: fa-github fa-lg
-    href: https://github.com/Reorienting-to-Recovery/R2Rscenario
+  - text: 'Articles'
+    menu: 
+      - text: 'Habitat Actions'
+        href: articles/habitat-actions.html
+      - text: 'Hydrology Actions'
+        href: articles/hydrology-actions.html
+      - text: 'Harvest Actions'
+        href: articles/harvest-actions.html
+      - text: 'Hatchery Actions'
+        href: articles/hatchery-actions.html
 
 
 repo:
   url:
-    home: https://github.com/Reorienting-to-Recovery/R2Rscenario
-    issue: https://github.com/Reorienting-to-Recovery/R2Rscenario/issues/
+    home: https://github.com/Reorienting-to-Recovery/R2Rscenarios
+    issue: https://github.com/Reorienting-to-Recovery/R2Rscenarios/issues/
