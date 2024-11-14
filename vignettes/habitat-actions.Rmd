@@ -82,7 +82,7 @@ This action models the effect of removing predator contact points to decrease pr
 
 #### 7: 20,000 acres of fish food production prey density (HRL)
 
-This action approximates the effect of adding `20,000` acres of fish food production as outlined in the [Memorandum of Understanding, Appendix 2](https://resources.ca.gov/-/media/CNRA-Website/Files/NewsRoom/email-items/VoluntaryAgreementMOUTermSheet20220329_SIGNED-20220811.pdf). This is modeled by setting prey density to "hi" in the Sutter Bypass and Sacramento River (to represent Colusa Basin) to coarsely represents effects of increasing 20,000 acres off-channel.
+This action approximates the effect of adding `20,000` acres of fish food production as outlined in the [Memorandum of Understanding, Appendix 2](https://resources.ca.gov/-/media/CNRA-Website/Files/NewsRoom/email-items/VoluntaryAgreementMOUTermSheet20220329_SIGNED-20220811.pdf). This is modeled by setting prey density to "hi" in the Sutter Bypass and Sacramento River (to represent Colusa Basin) to coarsely represents effects of increasing 20,000 acres off-channel. Additionally, the available acreage for dry side floodplain for Sutter and Colusa basins was calculated using [these data](https://urldefense.proofpoint.com/v2/url?u=https-3A__flowwest.shinyapps.io_riceflows4ff_&d=DwMGaQ&c=euGZstcaTDllvimEN8b7jXrwqOf-v5A_CdpgnVfiiMM&r=es1mYD_t8ssn_HUUEGOgPpeBoWf2_Iri3BC8scPyjqg&m=MPH46l1pSkkFUhwOq2afwCu7FQy9x-3ynNLgjT1FrFVENIGYvlHv77LDW2IA1HMx&s=gks_3V6uaP9BPa4q9vmFCDSgHkke0BCTa3QXxOITYfw&e=). The proportion of the committed 20,000 acres those acreages provide was calculated and then used to scale instream habitat for those watersheds for the months of January and February. 
 
 #### 8: Remove predation contact points (HRL)
 
