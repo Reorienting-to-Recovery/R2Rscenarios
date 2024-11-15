@@ -5,7 +5,9 @@ This package provides tools for creating valid scenario input data to run with t
 [`springRunDSM`]("https://Reorienting-to-Recovery/fallRunDSM/") life cycle models.
 
 ## Installation
+
 This package can be installed using the following commands: 
+
 ```{r}
 # install.packages("remotes")
 remotes::install_github("Reorienting-to-Recovery/DSMscenario")
@@ -13,7 +15,7 @@ remotes::install_github("Reorienting-to-Recovery/DSMscenario")
 
 ## Usage
 
-### Full Scenario Example
+### Building a scenario
 
 Scenarios can be defined within a dataframe and built using the `load_scenario`
 function. Each row within the dataframe represents one unique scenario action for 
@@ -23,24 +25,22 @@ Actions are defined below:
 
 #### Habitat 
 
-First define hydrology - and associated habitat
+First define flow-to-habitat relationship:
 
 * 1: Baseline Habitat 
 * 2: Theoretical Max Habitat 
-* 3: HRL habitat
-* 30: HRL + FF (dry years) habitat
+* 3: Healthy Rivers & Landscapes (HRL) habitat
 
 Layer on additional actions 
 
-* 4: Rice Lands Salmon Rearing Practice Standard 
+* 4: Add Rice Lands Salmon Rearing Practice Standard 
 * 5: Increase prey density 
 * 6: Decrease predation (scale contact points by 1/3)
-* 7: 20,000 acres of fish food production prey density (HRL)
+* 7: Add 20,000 acres of fish food production (HRL)
 * 8: Remove predation contact points (HRL)
-* 27: Effects of spring run weir
-* 28: Effects of above-dam spring run habitat
+* 27: Add effects of spring run weir on fall run
+* 28: Add effects of above-dam spring run habitat on fall run
 * 29: Add San Joaquin floodplain habitat
-* 32: Scale up habitat by X%
 
 #### Harvest 
 
@@ -59,14 +59,26 @@ Layer on additional actions
 * 18: Baseline hatchery 
 * 19: Only terminal hatchery / outplanting 
 * 20: Phased hatcheries
-* 21: Release 50% in bay 
 * 26: Install weir at hatchery
 
-#### Hydrology 
+#### Hydrology
+
 * 22: Use 2019 BiOp hydrology 
-* 23: Use EFF hydrology 
+* 23: Use Functional Flow (FF) hydrology 
 * 24: Use HR&L hydrology
 * 31: Use HR&L + FF (dry years) hydrology
+
+### Customizing actions
+
+Some actions allow the user to specify the watershed and/or year for which you want the action to be implemented. 
+Please refer to the more in-depth action documentation to see where this is possible:
+
+* [Habitat Actions](https://reorienting-to-recovery.github.io/R2Rscenarios/articles/habitat-actions.html)
+* [Hydrology Actions](https://reorienting-to-recovery.github.io/R2Rscenarios/articles/hydrology-actions.html)
+* [Harvest Actions](https://reorienting-to-recovery.github.io/R2Rscenarios/articles/harvest-actions.html)
+* [Hatchery Actions](https://reorienting-to-recovery.github.io/R2Rscenarios/articles/hatchery-actions.html)
+
+### Example: Kitchen Sink (Blended Scenario)
 
 For more information run `?load_scenario` in the console.
 
@@ -88,7 +100,7 @@ Hatchery
 
 Hydrology
 
-* 23: Use EFF hydrology on the Sacramento River
+* 23: Use FF hydrology on the Sacramento River
 
 ```r
 scenario_df <- data.frame(
@@ -117,5 +129,3 @@ groupings are stored in `R2Rscenario::watershed_groups`
 The `R2Rscenario` package uses data from several packages within the [Reorienting To Recovery Organization](https://github.com/Reorienting-to-Recovery). These relationships are visualized in the dependency graph below. 
 
 <img src="man/figures/dependencyChain.svg" width="100%"/>
-
-<div style="margin-top: 40px;">Data Assembled and Maintained by <a href = "http://www.flowwest.com/" target = "_blank"> <img src="man/figures/TransLogoTreb.png" width="150px"/></div>

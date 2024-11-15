@@ -42,7 +42,7 @@ There are 5 harvest actions that can be implemented in the model. Each has an as
 
 ### 18: Baseline hatchery
 
-If `18` is selected, baseline hatchery logic is used. This is a year-structured data object that shows hatchery releases by year, and numbers are based on current production numbers [California Hatchery Scientific Review Group, 2012](https://swfsc-publications.fisheries.noaa.gov/publications/CR/2012/2012California.pdf). 
+If `18` is selected, baseline hatchery logic is used. This is a year-structured data object that shows hatchery releases by year, and numbers are based on current production targets [California Hatchery Scientific Review Group, 2012](https://swfsc-publications.fisheries.noaa.gov/publications/CR/2012/2012California.pdf). 
 
 ```{r, echo = FALSE, warning = FALSE, message = FALSE}
 hatchery_watersheds <- c("Merced River", "Mokelumne River",
@@ -69,7 +69,7 @@ fallRunDSM::r_to_r_baseline_params$hatchery_release |>
 
 ### 19: Only terminal hatchery / outplanting
 
-If `19` is selected, there are no in-river hatchery releases in the model and instead "terminal" hatcheries are utilized, which release hatchery fish at the entry to the ocean to support commercial harvest.
+If `19` is selected, there are no in-river hatchery releases in the model and instead "terminal" hatcheries are utilized, which release hatchery fish at the entry to the ocean to support commercial harvest. While there are many forms of potential outplanting or terminal hatchery logic, this action assumes that juvenile salmonids are imprinted to either a terminal hatchery or to ocean net pen release sites and that there are low stray rates back into the model. This is different than our current trucking outplanting approach which can have high stray rates.
 
 ### 20: Phased hatchery
 
