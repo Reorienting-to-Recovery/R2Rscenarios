@@ -6,12 +6,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hydrology actions • R2Rscenario</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Hydrology actions">
+<script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<meta property="og:title" content="Hydrology actions">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -115,11 +116,12 @@ R2Rscenarios package.</p>
 <li>
 <code>22</code>: Use 2019 BiOp hydrology</li>
 <li>
-<code>23</code>: Use EFF hydrology</li>
+<code>23</code>: Use Functional Flow (FF) hydrology</li>
 <li>
-<code>24</code>: Use HR&amp;L hydrology</li>
+<code>24</code>: Use Healthy Rivers and Landscape (HRL))
+hydrology</li>
 <li>
-<code>31</code>: Use HR&amp;L + FF (dry years) hydrology</li>
+<code>31</code>: Use HRL + FF (dry years) hydrology</li>
 </ul>
 <div class="section level3">
 <h3 id="use-2019-biop-hydrology">22: Use 2019 BiOp hydrology<a class="anchor" aria-label="anchor" href="#use-2019-biop-hydrology"></a>
@@ -134,7 +136,7 @@ baseline run.</p>
 <p>If <code>23</code> is selected, the Sacramento and San Joaquin river
 mainstem flow objects will use a synthetic hydrograph representing
 functional flows (FF) in the system. These hydrographs cover the 20-year
-model timeseries and were generated through rulesets that optimized
+model time series and were generated through rulesets that optimized
 salmonid survival based on the model logic. For rulesets, specific
 values, and logic, please see the <a href="https://reorienting-to-recovery.github.io/DSMflow/articles/EFF.html" class="external-link">Sacramento
 FF documentation</a> and the <a href="https://reorienting-to-recovery.github.io/DSMflow/articles/EFF_SJ.html" class="external-link">San
@@ -142,28 +144,32 @@ Joaquin FF documentation</a>.</p>
 <p><img src="hydrology-actions_files/figure-html/unnamed-chunk-2-1.png" width="576"></p>
 </div>
 <div class="section level3">
-<h3 id="use-hrl-hydrology">24: Use HR&amp;L hydrology<a class="anchor" aria-label="anchor" href="#use-hrl-hydrology"></a>
+<h3 id="use-hrl-hydrology">24: Use HRL hydrology<a class="anchor" aria-label="anchor" href="#use-hrl-hydrology"></a>
 </h3>
-<p>If <code>24</code> is selected, the model will use a CalSim3 run that
-incorporates planned Habitat + Spring flow actions, which are expected
-in the near future, and proposed as part of the Healthy Rivers and
-Landscapes Program. However a scenario that reflects the Healthy Rivers
-and Landscapes proposal in full could not be accomplished in time for
-the October workshop, and is proposed for a future funding opportunity.
-This CalSim3 run is available at <a href="https://ceqanet.opr.ca.gov/2023060467/2" class="external-link">CEQA</a>.</p>
+<p>If <code>24</code> is selected, the model will use a CalSim3 run (LTO
+12a) that incorporates planned Habitat + Spring flow actions, which are
+expected in the near future, and proposed as part of the Healthy Rivers
+and Landscapes Program. However a scenario that reflects the Healthy
+Rivers and Landscapes proposal in full could not be accomplished in time
+for the October workshop, and is proposed for a future funding
+opportunity. This CalSim3 run is available at <a href="https://ceqanet.opr.ca.gov/2023060467/2" class="external-link">CEQA</a>.</p>
 </div>
 <div class="section level3">
-<h3 id="use-hrl-ff-dry-years-hydrology">31: Use HR&amp;L + FF (dry years) hydrology<a class="anchor" aria-label="anchor" href="#use-hrl-ff-dry-years-hydrology"></a>
+<h3 id="use-hrl-ff-dry-years-hydrology">31: Use HRL + FF (dry years) hydrology<a class="anchor" aria-label="anchor" href="#use-hrl-ff-dry-years-hydrology"></a>
 </h3>
 <p>If <code>31</code> is selected, the model will use a hydrology with
 the CalSim3 run from <code>24</code> as a base, and the FF hydrology
 from <code>23</code> for the San Joaquin and Sacramento Rivers. This
 hydrology implements FF only in model dry years (<code>1982</code>,
-<code>1986</code>, <code>1988-1993</code>, and <code>1995</code>). This
-has not been fully tested with habitat and will be iteratively improved.
-The plot below shows what this looks like for the San Joaquin and
-Sacramento Rivers; all other tributaries will be the same as flows from
-<code>24</code>.</p>
+<code>1986</code>, <code>1988-1993</code>, and <code>1995</code>). Water
+year types (Critical, Dry, Below Normal, Above Normal, and Wet) are put
+together by the California Department of Water Resources and maintained
+on <a href="https://cdec.water.ca.gov/reportapp/javareports?name=WSIHIST" class="external-link">CDEC</a>.
+Critical, Dry, and Below Normal years are coded as Dry in the model.
+This has not been fully tested with habitat and will be iteratively
+improved. The plot below shows what this looks like for the San Joaquin
+and Sacramento Rivers; all other tributaries will be the same as flows
+from <code>24</code>.</p>
 <p><img src="hydrology-actions_files/figure-html/unnamed-chunk-3-1.png" width="576"></p>
 </div>
 </div>

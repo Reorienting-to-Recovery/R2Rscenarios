@@ -6,12 +6,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reorienting to Recovery scenarios • R2Rscenario</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Reorienting to Recovery scenarios">
+<script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
+<meta property="og:title" content="Reorienting to Recovery scenarios">
 <meta property="og:description" content="This package contains functions for creating scenarios to simulate using the Reorinting to Recovery life cycle models. This package also contains cached scenarios that are run to inform the R2R SDM process.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -93,37 +94,36 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>This package can be installed using the following commands: <code>{r} # install.packages("remotes") remotes::install_github("Reorienting-to-Recovery/DSMscenario")</code></p>
+<p>This package can be installed using the following commands:</p>
+<p><code>{r} # install.packages("remotes") remotes::install_github("Reorienting-to-Recovery/DSMscenario")</code></p>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
 <div class="section level3">
-<h3 id="full-scenario-example">Full Scenario Example<a class="anchor" aria-label="anchor" href="#full-scenario-example"></a>
+<h3 id="building-a-scenario">Building a scenario<a class="anchor" aria-label="anchor" href="#building-a-scenario"></a>
 </h3>
 <p>Scenarios can be defined within a dataframe and built using the <code>load_scenario</code> function. Each row within the dataframe represents one unique scenario action for a given watershed, for a period of years and number of units of effort.</p>
 <p>Actions are defined below:</p>
 <div class="section level4">
 <h4 id="habitat">Habitat<a class="anchor" aria-label="anchor" href="#habitat"></a>
 </h4>
-<p>First define hydrology - and associated habitat</p>
+<p>First define flow-to-habitat relationship:</p>
 <ul>
 <li>1: Baseline Habitat</li>
 <li>2: Theoretical Max Habitat</li>
-<li>3: HRL habitat</li>
-<li>30: HRL + FF (dry years) habitat</li>
+<li>3: Healthy Rivers &amp; Landscapes (HRL) habitat</li>
 </ul>
 <p>Layer on additional actions</p>
 <ul>
-<li>4: Rice Lands Salmon Rearing Practice Standard</li>
+<li>4: Add Rice Lands Salmon Rearing Practice Standard</li>
 <li>5: Increase prey density</li>
 <li>6: Decrease predation (scale contact points by 1/3)</li>
-<li>7: 20,000 acres of fish food production prey density (HRL)</li>
+<li>7: Add 20,000 acres of fish food production (HRL)</li>
 <li>8: Remove predation contact points (HRL)</li>
-<li>27: Effects of spring run weir</li>
-<li>28: Effects of above-dam spring run habitat</li>
+<li>27: Add effects of spring run weir on fall run</li>
+<li>28: Add effects of above-dam spring run habitat on fall run</li>
 <li>29: Add San Joaquin floodplain habitat</li>
-<li>32: Scale up habitat by X%</li>
 </ul>
 </div>
 <div class="section level4">
@@ -148,7 +148,6 @@
 <li>18: Baseline hatchery</li>
 <li>19: Only terminal hatchery / outplanting</li>
 <li>20: Phased hatcheries</li>
-<li>21: Release 50% in bay</li>
 <li>26: Install weir at hatchery</li>
 </ul>
 </div>
@@ -157,10 +156,26 @@
 </h4>
 <ul>
 <li>22: Use 2019 BiOp hydrology</li>
-<li>23: Use EFF hydrology</li>
+<li>23: Use Functional Flow (FF) hydrology</li>
 <li>24: Use HR&amp;L hydrology</li>
 <li>31: Use HR&amp;L + FF (dry years) hydrology</li>
 </ul>
+</div>
+</div>
+<div class="section level3">
+<h3 id="customizing-actions">Customizing actions<a class="anchor" aria-label="anchor" href="#customizing-actions"></a>
+</h3>
+<p>Some actions allow the user to specify the watershed and/or year for which you want the action to be implemented. Please refer to the more in-depth action documentation to see where this is possible:</p>
+<ul>
+<li><a href="https://reorienting-to-recovery.github.io/R2Rscenarios/articles/habitat-actions.html">Habitat Actions</a></li>
+<li><a href="https://reorienting-to-recovery.github.io/R2Rscenarios/articles/hydrology-actions.html">Hydrology Actions</a></li>
+<li><a href="https://reorienting-to-recovery.github.io/R2Rscenarios/articles/harvest-actions.html">Harvest Actions</a></li>
+<li><a href="https://reorienting-to-recovery.github.io/R2Rscenarios/articles/hatchery-actions.html">Hatchery Actions</a></li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="example-kitchen-sink-blended-scenario">Example: Kitchen Sink (Blended Scenario)<a class="anchor" aria-label="anchor" href="#example-kitchen-sink-blended-scenario"></a>
+</h3>
 <p>For more information run <code><a href="reference/load_scenario.html">?load_scenario</a></code> in the console.</p>
 <p>The following example builds the kitchen sink scenario:</p>
 <p>Habitat</p>
@@ -179,7 +194,7 @@
 </ul>
 <p>Hydrology</p>
 <ul>
-<li>23: Use EFF hydrology on the Sacramento River</li>
+<li>23: Use FF hydrology on the Sacramento River</li>
 </ul>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scenario_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
@@ -190,7 +205,6 @@
 <span><span class="va">scenario</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/load_scenario.html">load_scenario</a></span><span class="op">(</span>scenario <span class="op">=</span> <span class="va">scenario_df</span>,</span>
 <span>                          species <span class="op">=</span> <span class="fu">R2Rscenario</span><span class="fu">::</span><span class="va"><a href="reference/species.html">species</a></span><span class="op">$</span><span class="va">FALL_RUN</span>,</span>
 <span>                          params <span class="op">=</span> <span class="fu">fallRunDSM</span><span class="fu">::</span><span class="va"><a href="https://reorienting-to-recovery.github.io/fallRunDSM/reference/params.html" class="external-link">r_to_r_baseline_params</a></span><span class="op">)</span></span></code></pre></div>
-</div>
 </div>
 <div class="section level3">
 <h3 id="helper-datasets">Helper Datasets<a class="anchor" aria-label="anchor" href="#helper-datasets"></a>
@@ -205,9 +219,6 @@
 </h3>
 <p>The <code>R2Rscenario</code> package uses data from several packages within the <a href="https://github.com/Reorienting-to-Recovery" class="external-link">Reorienting To Recovery Organization</a>. These relationships are visualized in the dependency graph below.</p>
 <p><img src="reference/figures/dependencyChain.svg" width="100%"></p>
-<div style="margin-top: 40px;">
-Data Assembled and Maintained by <a href="http://www.flowwest.com/" target="_blank" class="external-link"> <img src="reference/figures/TransLogoTreb.png" width="150px"></a>
-</div>
 </div>
 </div>
 </div>
