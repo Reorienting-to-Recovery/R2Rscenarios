@@ -233,14 +233,14 @@ apply_habitat_actions <- function(scenario, params, starting_habitat, starting_h
   
   if(27 %in% scenario$action) {
     if(species != "fr") {
-      cli::abort("Action 27 cannot be run on species other than fall run")
+      cli::cli_abort("Action 27 cannot be run on species other than fall run")
     }
     updated_habitat$spawning_habitat = create_weir_effect_on_spawning_habitat(updated_habitat)
   }
   
   if(28 %in% scenario$action) {
     if(species != "fr") {
-      cli::abort("Action 28 cannot be run on species other than fall run")
+      cli::cli_abort("Action 28 cannot be run on species other than fall run")
     }
     updated_habitat$inchannel_habitat_juvenile = create_spring_run_effect_on_fall_run_juvenile_habitat(updated_habitat)$inchannel_habitat_juv_sr_effect
     updated_habitat$floodplain_habitat = create_spring_run_effect_on_fall_run_juvenile_habitat(updated_habitat)$floodplain_habitat_sr_effect
@@ -305,6 +305,10 @@ apply_habitat_actions <- function(scenario, params, starting_habitat, starting_h
 #' @export
 #' 
 apply_harvest_actions <- function(scenario, params, species) {
+  
+  if(species != "fr") {
+    cli::cli_abort("Harvest actions can only be applied to fall run. Incidental take is only form of applied pressure to spring and winter runs.")
+  }
   # * 10: Baseline Harvest (default run this first)
     updated_harvest <- list(restrict_harvest_to_hatchery_ocean = params$restrict_harvest_to_hatchery_ocean,
                             restrict_harvest_to_hatchery_trib = params$restrict_harvest_to_hatchery_trib,
