@@ -41,11 +41,6 @@ load_scenario <- function(scenario, params = fallRunDSM::r_to_r_baseline_params,
   ### SET UP -------------------------------------------------------------------
   species <- match.arg(species)
   action_numbers <- scenario$action
-  max_habitat <- case_when(species == "fr" ~ fallRunDSM::r_to_r_tmh_params
-                           # TODO add in SR and WR 
-                           # species == "sr" ~ springRunDSM::r_to_r_tmh_params
-                           # species == "wr" ~ winterRunDSM::r_to_r_tmh_params # TODO add this in 
-                           )
   
   starting_hydrology <- case_when(22 %in% scenario$action ~ "biop_itp_2018_2019", 
                                   23 %in% scenario$action ~ "eff_sac", 
@@ -237,23 +232,29 @@ apply_habitat_actions <- function(scenario, params, starting_habitat, starting_h
   # TODO additional habitat modifications = adding acres and doing rice field practice
   
   if(27 %in% scenario$action) {
+    if(species != "fr") {
+      cli::abort("Action 27 cannot be run on species other than fall run")
+    }
     updated_habitat$spawning_habitat = create_weir_effect_on_spawning_habitat(updated_habitat)
   }
   
   if(28 %in% scenario$action) {
+    if(species != "fr") {
+      cli::abort("Action 28 cannot be run on species other than fall run")
+    }
     updated_habitat$inchannel_habitat_juvenile = create_spring_run_effect_on_fall_run_juvenile_habitat(updated_habitat)$inchannel_habitat_juv_sr_effect
     updated_habitat$floodplain_habitat = create_spring_run_effect_on_fall_run_juvenile_habitat(updated_habitat)$floodplain_habitat_sr_effect
   }
   
   if(29 %in% scenario$action) {
     # raise floodplain habitat in san joaquin and tributaries to half of theoretical max habitat
-    updated_habitat$floodplain_habitat["San Joaquin River",,] <- DSMhabitat::fr_fp$r_to_r_tmh["San Joaquin River",,] * .5
-    updated_habitat$floodplain_habitat["Merced River",,] <- DSMhabitat::fr_fp$r_to_r_tmh["Merced River",,] * .5
-    updated_habitat$floodplain_habitat["Stanislaus River",,] <- DSMhabitat::fr_fp$r_to_r_tmh["Stanislaus River",,] * .5
-    updated_habitat$floodplain_habitat["Tuolumne River",,] <- DSMhabitat::fr_fp$r_to_r_tmh["Tuolumne River",,] * .5
-    updated_habitat$floodplain_habitat["Mokelumne River",,] <- DSMhabitat::fr_fp$r_to_r_tmh["Mokelumne River",,] * .5
-    updated_habitat$floodplain_habitat["Calaveras River",,] <- DSMhabitat::fr_fp$r_to_r_tmh["Calaveras River",,] * .5
-    updated_habitat$floodplain_habitat["Cosumnes River",,] <- DSMhabitat::fr_fp$r_to_r_tmh["Cosumnes River",,] * .5
+    updated_habitat$floodplain_habitat["San Joaquin River",,] <- eval(parse(text = paste0("DSMhabitat::", species, "_fp$r_to_r_tmh")))["San Joaquin River",,] * .5
+    updated_habitat$floodplain_habitat["Merced River",,] <- eval(parse(text = paste0("DSMhabitat::", species, "_fp$r_to_r_tmh")))["Merced River",,] * .5
+    updated_habitat$floodplain_habitat["Stanislaus River",,] <- eval(parse(text = paste0("DSMhabitat::", species, "_fp$r_to_r_tmh")))["Stanislaus River",,] * .5
+    updated_habitat$floodplain_habitat["Tuolumne River",,] <- eval(parse(text = paste0("DSMhabitat::", species, "_fp$r_to_r_tmh")))["Tuolumne River",,] * .5
+    updated_habitat$floodplain_habitat["Mokelumne River",,] <- eval(parse(text = paste0("DSMhabitat::", species, "_fp$r_to_r_tmh")))["Mokelumne River",,] * .5
+    updated_habitat$floodplain_habitat["Calaveras River",,] <- eval(parse(text = paste0("DSMhabitat::", species, "_fp$r_to_r_tmh")))["Calaveras River",,] * .5
+    updated_habitat$floodplain_habitat["Cosumnes River",,] <- eval(parse(text = paste0("DSMhabitat::", species, "_fp$r_to_r_tmh")))["Cosumnes River",,] * .5
   }
   
   if(32 %in% scenario$action) {
