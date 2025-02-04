@@ -191,6 +191,12 @@ apply_habitat_actions <- function(scenario, params, starting_habitat, starting_h
                           prey_density <- params$prey_density, # matrix("hi", nrow = 31, ncol = 20),
                           prey_density_delta <- params$prey_density_delta #matrix("hi", nrow = 2, ncol = 20)
                           )
+  # clean up dim names that are lost when using case_when
+  dimnames(updated_habitat$weeks_flooded)[[2]] <- month.abb
+  dimnames(updated_habitat$weeks_flooded)[[3]] <- as.character(1980:2000)
+  dimnames(updated_habitat$delta_habitat)[[2]] <- as.character(1980:2000)
+  dimnames(updated_habitat$delta_habitat)[[3]] <- c("North Delta", "South Delta")
+  dimnames(updated_habitat$sutter_habitat)[[2]] <- as.character(1980:2000)
   
   # additional layers 
   # 4 - Rice Lands Salmon Rearing Practice Standard 
