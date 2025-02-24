@@ -95,7 +95,8 @@
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>This package can be installed using the following commands:</p>
-<p><code>{r} # install.packages("remotes") remotes::install_github("Reorienting-to-Recovery/DSMscenario")</code></p>
+<pre><code><span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"Reorienting-to-Recovery/DSMscenario"</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
@@ -157,8 +158,8 @@
 <ul>
 <li>22: Use 2019 BiOp hydrology</li>
 <li>23: Use Functional Flow (FF) hydrology</li>
-<li>24: Use HR&amp;L hydrology</li>
-<li>31: Use HR&amp;L + FF (dry years) hydrology</li>
+<li>24: Use HRL hydrology</li>
+<li>31: Use HRL + FF (dry years) hydrology</li>
 </ul>
 </div>
 </div>
@@ -196,7 +197,7 @@
 <ul>
 <li>23: Use FF hydrology on the Sacramento River</li>
 </ul>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scenario_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  watershed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"All"</span>, <span class="fl">6</span><span class="op">)</span>, <span class="st">"Sacramento River"</span><span class="op">)</span>,</span>
 <span>  action <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">14</span>, <span class="fl">16</span>, <span class="fl">19</span>, <span class="fl">23</span><span class="op">)</span>,</span>
@@ -212,7 +213,7 @@
 <p>See reference, datasets, for a full list of helper datasets.</p>
 <p>For a list of proper watershed labels see: <code><a href="reference/watershed_labels.html">R2Rscenario::watershed_labels</a></code></p>
 <p>The minimum decay rates for each watershed are stored in <code><a href="reference/decay_rate.html">R2Rscenario::spawn_decay_rate</a></code> and <code><a href="reference/decay_rate.html">R2Rscenario::rear_decay_rate</a></code></p>
-<p>Regulated watersheds are stored in <code>DSMscenario::regulated_watersheds</code> and SIT watershed groupings are stored in <code><a href="reference/watershed_groups.html">R2Rscenario::watershed_groups</a></code></p>
+<p>Regulated watersheds are stored in <code><a href="https://CVPIA-OSC.github.io/DSMscenario//reference/regulated_watersheds.html" class="external-link">DSMscenario::regulated_watersheds</a></code> and SIT watershed groupings are stored in <code><a href="reference/watershed_groups.html">R2Rscenario::watershed_groups</a></code></p>
 </div>
 <div class="section level3">
 <h3 id="dependencies">Dependencies<a class="anchor" aria-label="anchor" href="#dependencies"></a>

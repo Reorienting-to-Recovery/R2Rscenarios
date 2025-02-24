@@ -33,7 +33,7 @@ There are 4 hydrology actions that can be implemented in the model. Each has an 
 
 * `22`: Use 2019 BiOp hydrology 
 * `23`: Use Functional Flow (FF) hydrology 
-* `24`: Use Healthy Rivers and Landscape (HRL)) hydrology
+* `24`: Use Healthy Rivers and Landscape (HRL) hydrology
 * `31`: Use HRL + FF (dry years) hydrology
 
 ### 22: Use 2019 BiOp hydrology
@@ -62,9 +62,9 @@ DSMflow::flows_cfs$eff_sac |>
        title = "Functional flows")
 ```
 
-### 24: Use HRL hydrology
+### 24: Use Healthy Rivers and Landscapes (HRL) hydrology
 
-If `24` is selected, the model will use a CalSim3 run (LTO 12a) that incorporates planned Habitat + Spring flow actions, which are expected in the near future, and proposed as part of the Healthy Rivers and Landscapes Program. However a scenario that reflects the Healthy Rivers and Landscapes proposal in full could not be accomplished in time for the October workshop, and is proposed for a future funding opportunity. This CalSim3 run is available at [CEQA](https://ceqanet.opr.ca.gov/2023060467/2). 
+If `24` is selected, the model will use a CalSim3 run (LTO 12a) that incorporates planned Habitat + Spring flow actions, which are expected in the near future, and proposed as part of the Healthy Rivers and Landscapes Program. However a scenario that reflects the Healthy Rivers and Landscapes proposal in full could not be accomplished in time for the October workshop, and is proposed for a future funding opportunity. Documenation on this CalSim3 run is available at [CEQA](https://ceqanet.opr.ca.gov/2023060467/2). 
 
 
 ### 31: Use HRL + FF (dry years) hydrology

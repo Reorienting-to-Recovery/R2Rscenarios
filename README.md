@@ -8,7 +8,7 @@ This package provides tools for creating valid scenario input data to run with t
 
 This package can be installed using the following commands: 
 
-```{r}
+```
 # install.packages("remotes")
 remotes::install_github("Reorienting-to-Recovery/DSMscenario")
 ```
@@ -65,8 +65,8 @@ Layer on additional actions
 
 * 22: Use 2019 BiOp hydrology 
 * 23: Use Functional Flow (FF) hydrology 
-* 24: Use HR&L hydrology
-* 31: Use HR&L + FF (dry years) hydrology
+* 24: Use HRL hydrology
+* 31: Use HRL + FF (dry years) hydrology
 
 ### Customizing actions
 
