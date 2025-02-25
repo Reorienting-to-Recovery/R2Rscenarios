@@ -58,9 +58,9 @@ This habitat action represents current habitat used in the SIT models as well as
 
 This habitat action represents the total potential habitat available for salmonids, above- and below-dams in the system. For further documentation on how the theoretical maximum habitat values were calculated and incorporated into the model, please see [this documentation](https://reorienting-to-recovery.gitbook.io/documentation-site/zCZ2Z2yqFYMUQrtZdTlg/modeling-documentation/scenarios/bookend-scenario-overview/theoretical-maximum-habitat-overview). 
 
-#### 3: HR&L Habitat
+#### 3: Healthy Rivers and Landscapes (HRL) Habitat
 
-This habitat action was designed to approximate the effects of ongoing and proposed projects under the Healthy Rivers and Landscapes Program, as outlined in the [Memorandum of Understanding, Appendix 2](https://resources.ca.gov/-/media/CNRA-Website/Files/NewsRoom/email-items/VoluntaryAgreementMOUTermSheet20220329_SIGNED-20220811.pdf). Some actions in the MOU are available as "layered" on actions (i.e. actions `7`, `8`). For further documentation on how these actions were incorporated into the model, please see [this documentation](https://reorienting-to-recovery.gitbook.io/documentation-site/zCZ2Z2yqFYMUQrtZdTlg/modeling-documentation/scenarios/balanced-scenario-overview/elephant-overview/elephant-habitat-analysis). 
+This habitat action was designed to approximate the effects of ongoing and proposed projects under the Healthy Rivers and Landscapes Program, as outlined in the [Memorandum of Understanding, Appendix 2](https://resources.ca.gov/-/media/CNRA-Website/Files/NewsRoom/email-items/VoluntaryAgreementMOUTermSheet20220329_SIGNED-20220811.pdf). Some actions in the MOU are available as "layered" on actions (i.e. actions `7`, `8`). For further documentation on how these actions were incorporated into the model, please see [this documentation](https://reorienting-to-recovery.gitbook.io/documentation-site/zCZ2Z2yqFYMUQrtZdTlg/modeling-documentation/scenarios/balanced-scenario-overview/elephant-habitat-overview/elephant-habitat-modeling-details). 
 
 ### Layered actions
 
