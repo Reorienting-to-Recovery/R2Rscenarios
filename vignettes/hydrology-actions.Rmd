@@ -45,7 +45,7 @@ If `22` is selected, all flow inputs to the model will be from the 2018-2019 Cal
 If `23` is selected, the Sacramento and San Joaquin river mainstem flow objects will use a synthetic hydrograph representing functional flows (FF) in the system. These hydrographs cover the 20-year model time series and were generated through rulesets that optimized salmonid survival based on the model logic. For rulesets, specific values, and logic, please see the [Sacramento FF documentation](https://reorienting-to-recovery.github.io/DSMflow/articles/EFF.html) and the [San Joaquin FF documentation](https://reorienting-to-recovery.github.io/DSMflow/articles/EFF_SJ.html). 
 
 ```{r, message = FALSE, warning = FALSE, echo = FALSE}
-DSMflow::flows_cfs$eff_sac |> 
+DSMflow::flows_cfs$eff |> 
   filter(year(date) %in% 1980:2000) |> 
   select(date, `Upper Sacramento River`, `San Joaquin River`) |> 
   pivot_longer(`Upper Sacramento River`:`San Joaquin River`, 
