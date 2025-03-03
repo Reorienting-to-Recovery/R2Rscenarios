@@ -43,7 +43,7 @@ load_scenario <- function(scenario, params = fallRunDSM::r_to_r_baseline_params,
   action_numbers <- scenario$action
   
   starting_hydrology <- case_when(22 %in% scenario$action ~ "biop_itp_2018_2019", 
-                                  23 %in% scenario$action ~ "eff_sac", 
+                                  23 %in% scenario$action ~ "eff", 
                                   24 %in% scenario$action ~ "LTO_12a",  
                                   31 %in% scenario$action ~ "LTO_12a_eff_dy")
   
@@ -52,9 +52,9 @@ load_scenario <- function(scenario, params = fallRunDSM::r_to_r_baseline_params,
                                 2 %in% action_numbers & 
                                   starting_hydrology == "biop_itp_2018_2019" ~ "r_to_r_tmh", 
                                 1 %in% action_numbers & 
-                                  starting_hydrology == "eff_sac" ~ "r_to_r_eff_baseline", 
+                                  starting_hydrology == "eff" ~ "r_to_r_eff_baseline", 
                                 2 %in% action_numbers & 
-                                  starting_hydrology == "eff_sac" ~ "r_to_r_tmh_eff", 
+                                  starting_hydrology == "eff" ~ "r_to_r_tmh_eff", 
                                 3 %in% action_numbers & 
                                   starting_hydrology == "LTO_12a" ~ "r_to_r_hrl",
                                 30 %in% action_numbers & 
@@ -182,7 +182,7 @@ apply_habitat_actions <- function(scenario, params, starting_habitat, starting_h
                                                       starting_habitat %in% c("r_to_r_eff_baseline", "r_to_r_baseline") ~ DSMhabitat::delta_habitat$r_to_r_baseline,
                                                     starting_habitat == "r_to_r_hrl" ~ DSMhabitat::delta_habitat$r_to_r_hrl), 
                           weeks_flooded = case_when(starting_hydrology == "biop_itp_2018_2019" ~ DSMhabitat::weeks_flooded$biop_itp_2018_2019,
-                                                      starting_hydrology == "eff_sac" ~ DSMhabitat::weeks_flooded$eff_sac, #TODO broken figure out fix
+                                                      starting_hydrology == "eff" ~ DSMhabitat::weeks_flooded$eff, #TODO broken figure out fix
                                                       starting_hydrology == "LTO_12a" ~ DSMhabitat::weeks_flooded$lto_12a,
                                                     starting_hydrology == "LTO_12a_eff_dy" ~ DSMhabitat::weeks_flooded$lto_12a), 
                           # Note: these temp variables change with calsim updates
@@ -395,14 +395,14 @@ apply_hatchery_actions <- function(scenario, params, species) {
 }
 
 apply_hydrology_actions <- function(scenario, params, starting_hydrology, species) {
-  is_calsim_output_version <- ifelse(starting_hydrology %in% c("eff_sac", "LTO_12a_eff_dy"), FALSE, TRUE)
+  is_calsim_output_version <- ifelse(starting_hydrology %in% c("eff", "LTO_12a_eff_dy"), FALSE, TRUE)
   if(is_calsim_output_version) {
     # no san_joaquin_flow object for calsims
     san_joaquin_flows <- matrix(0, nrow = 12, ncol = 21,
                                 dimnames = list(month.abb, 1980:2000))
   } else {
     # use eff san_joaquin_flows
-    san_joaquin_flows <- eval(parse(text = paste0("DSMflow::san_joaquin_flows$eff_sac")))
+    san_joaquin_flows <- eval(parse(text = paste0("DSMflow::san_joaquin_flows$eff")))
   }
 
   updated_hydrology <- list(upper_sacramento_flows = eval(parse(text = paste0("DSMflow::upper_sacramento_flows$", starting_hydrology))), 
