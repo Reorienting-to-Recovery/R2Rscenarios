@@ -65,26 +65,3 @@ DSMflow::flows_cfs$eff |>
 ### 24: Use Healthy Rivers and Landscapes (HRL) hydrology
 
 If `24` is selected, the model will use a CalSim3 run (LTO 12a) that incorporates planned Habitat + Spring flow actions, which are expected in the near future, and proposed as part of the Healthy Rivers and Landscapes Program. However a scenario that reflects the Healthy Rivers and Landscapes proposal in full could not be accomplished in time for the October workshop, and is proposed for a future funding opportunity. Documenation on this CalSim3 run is available at [CEQA](https://ceqanet.opr.ca.gov/2023060467/2). 
-
-
-### 31: Use HRL + FF (dry years) hydrology
-
-If `31` is selected, the model will use a hydrology with the CalSim3 run from `24` as a base, and the FF hydrology from `23` for the San Joaquin and Sacramento Rivers. This hydrology implements FF only in model dry years (`1982`, `1986`, `1988-1993`, and `1995`). Water year types (Critical, Dry, Below Normal, Above Normal, and Wet) are put together by the California Department of Water Resources and maintained on [CDEC](https://cdec.water.ca.gov/reportapp/javareports?name=WSIHIST). Critical, Dry, and Below Normal years are coded as Dry in the model. This has not been fully tested with habitat and will be iteratively improved. The plot below shows what this looks like for the San Joaquin and Sacramento Rivers; all other tributaries will be the same as flows from `24`.
-
-```{r, message = FALSE, warning = FALSE, echo = FALSE}
-DSMflow::flows_cfs$LTO_12a_eff_dy |> 
-  filter(year(date) %in% 1980:2000) |> 
-  select(date, `Upper Sacramento River`, `San Joaquin River`) |> 
-  pivot_longer(`Upper Sacramento River`:`San Joaquin River`, 
-               names_to = "watershed",
-               values_to = "flow") |> 
-  ggplot(aes(x = date, y = flow, color = watershed)) + 
-  geom_line() +
-  facet_wrap(~watershed, nrow = 2,
-             scale = "free_y") +
-  theme_bw() +
-  theme(legend.position = "") +
-  labs(x = "Model date",
-       y = "Flow (cfs)",
-       title = "CalSim3 + FF hydrology")
-```
