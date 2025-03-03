@@ -66,7 +66,6 @@ Layer on additional actions
 * 22: Use 2019 BiOp hydrology 
 * 23: Use Functional Flow (FF) hydrology 
 * 24: Use HRL hydrology
-* 31: Use HRL + FF (dry years) hydrology
 
 ### Customizing actions
 

@@ -44,8 +44,8 @@ load_scenario <- function(scenario, params = fallRunDSM::r_to_r_baseline_params,
   
   starting_hydrology <- case_when(22 %in% scenario$action ~ "biop_itp_2018_2019", 
                                   23 %in% scenario$action ~ "eff", 
-                                  24 %in% scenario$action ~ "LTO_12a",  
-                                  31 %in% scenario$action ~ "LTO_12a_eff_dy")
+                                  24 %in% scenario$action ~ "LTO_12a")#,  
+                                  #31 %in% scenario$action ~ "LTO_12a_eff_dy")
   
   starting_habitat <- case_when(1 %in% action_numbers & 
                                   starting_hydrology == "biop_itp_2018_2019" ~ "r_to_r_baseline",
@@ -56,9 +56,9 @@ load_scenario <- function(scenario, params = fallRunDSM::r_to_r_baseline_params,
                                 2 %in% action_numbers & 
                                   starting_hydrology == "eff" ~ "r_to_r_tmh_eff", 
                                 3 %in% action_numbers & 
-                                  starting_hydrology == "LTO_12a" ~ "r_to_r_hrl",
-                                30 %in% action_numbers & 
-                                  starting_hydrology == "LTO_12a_eff_dy" ~ "r_to_r_hrl_eff") 
+                                  starting_hydrology == "LTO_12a" ~ "r_to_r_hrl")#,
+                                #30 %in% action_numbers & 
+                                  #starting_hydrology == "LTO_12a_eff_dy" ~ "r_to_r_hrl_eff") 
   
   ### habitat modification -----------------------------------------------------
   updated_habitat <- apply_habitat_actions(scenario = scenario, 
@@ -183,8 +183,8 @@ apply_habitat_actions <- function(scenario, params, starting_habitat, starting_h
                                                     starting_habitat == "r_to_r_hrl" ~ DSMhabitat::delta_habitat$r_to_r_hrl), 
                           weeks_flooded = case_when(starting_hydrology == "biop_itp_2018_2019" ~ DSMhabitat::weeks_flooded$biop_itp_2018_2019,
                                                       starting_hydrology == "eff" ~ DSMhabitat::weeks_flooded$eff, #TODO broken figure out fix
-                                                      starting_hydrology == "LTO_12a" ~ DSMhabitat::weeks_flooded$lto_12a,
-                                                    starting_hydrology == "LTO_12a_eff_dy" ~ DSMhabitat::weeks_flooded$lto_12a), 
+                                                      starting_hydrology == "LTO_12a" ~ DSMhabitat::weeks_flooded$lto_12a),#,
+                                                    #starting_hydrology == "LTO_12a_eff_dy" ~ DSMhabitat::weeks_flooded$lto_12a), 
                           # Note: these temp variables change with calsim updates
                           avg_temp = DSMtemperature::stream_temperature$biop_itp_2018_2019, #TODO update once we have VA
                           degree_days = DSMtemperature::degree_days$biop_itp_2018_2019, # TODO also add in degree days above dam logic stuff 
