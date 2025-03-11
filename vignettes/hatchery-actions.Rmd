@@ -105,7 +105,7 @@ If `21` is selected, the parameter `hatchery_release_proportion_bay` is set to `
 
 ### 26: Install weir at hatchery
 
-If `26` is selected, the model will scale down `proportion_hatchery` for each watershed by `20%` to approximate the effect of installing a weir at the hatchery.
+If `26` is selected, the model will scale down `proportion_hatchery` for each watershed by `20%` to approximate the effect of installing a weir at the hatchery. Installations of weirs have been shown to reduce proportion of hatchery fish on spawning grounds, or pHOS, by anywhere from 1% - 48% on different watersheds [Wilson et. al, 2019](https://reorienting-to-recovery.s3.us-west-1.amazonaws.com/Wilson_etal_2019_hatchery_weir.pdf), but can be as high as 75% [Wilson & Buehrens, 2023](https://reorienting-to-recovery.s3.us-west-1.amazonaws.com/N+American+J+Fish+Manag+-+2024+-+Wilson+-+Weirs++An+effective+tool+to+reduce+hatchery+wild+interactions+on+the+spawning.pdf).
 
 ```{r, echo = FALSE, warning = FALSE, message = FALSE}
 tibble("watershed" = fallRunDSM::watershed_labels,
