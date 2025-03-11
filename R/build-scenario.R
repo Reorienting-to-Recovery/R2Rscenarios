@@ -387,7 +387,6 @@ apply_hatchery_actions <- function(scenario, params, species) {
   } 
   
   # * 26: install weir at hatchery, remove 20% hatchery? 
-  # TODO confirm these methods
   if (26 %in% scenario$action) {
     updated_hatchery$proportion_hatchery = params$proportion_hatchery * .80
   }
